@@ -5,8 +5,9 @@ A web application for running pinewood derby voting events. Built for Trail Life
 ## Features
 
 - **Event Management**: Create and manage multiple derby events with custom names and dates
-- **Category Setup**: Define voting categories (e.g., "Most Creative", "Best Paint Job", "Coolest Design")
+- **Category Setup**: Define voting categories (e.g., "Most Creative", "Best Paint Job", "Coolest Design") with ability to rename and reorder
 - **Car Registration**: Register cars by number with optional names for winner announcements
+- **Print Voting Slips**: Generate printable ballot slips for voters
 - **Vote Entry**: Fast slip-based voting interface - enter all category votes from a single ballot at once
 - **Live Results**: Real-time vote tallies with visual bar charts showing top 5 cars per category
 - **Presentation Mode**: Full-screen results display for projecting at events
@@ -65,13 +66,13 @@ npm run preview
 
 ## Data Storage
 
-All data is stored in the browser's localStorage under the key `derbyVoteData`. Use the Export/Import feature in Setup to backup your data or transfer between devices.
+All data is stored in the browser's localStorage under the key `derby-vote-data`. Use the Export/Import feature in Setup to backup your data or transfer between devices.
 
 ## Tech Stack
 
 - React 19
 - Vite 7
-- CSS (no framework)
+- Tailwind CSS
 - localStorage for persistence
 
 ## License
