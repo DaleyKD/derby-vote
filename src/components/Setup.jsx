@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getCars, renameCategory } from '../storage';
-import { FileText, ListChecks, Car, Tags, ChevronUp, ChevronDown, Pencil, X } from 'lucide-react';
+import { FileText, ListChecks, Car, Tags, ChevronUp, ChevronDown, Pencil, X, Printer } from 'lucide-react';
 
 export default function Setup({ event, onUpdateEvent, onStartVoting }) {
   const [newCategory, setNewCategory] = useState('');
@@ -121,6 +121,153 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
   };
 
   const canStartVoting = event.categories.length > 0 && cars.length > 0;
+  const canPrintSlips = event.categories.length > 0;
+
+  const handlePrintSlips = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert('Please allow pop-ups to print voting slips.');
+      return;
+    }
+
+    const formattedDate = event.eventDate
+      ? new Date(event.eventDate + 'T00:00:00').toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : '';
+
+    // Generate HTML for print
+    const slipHtml = `
+      <div class="slip">
+        <div class="header">
+          <div class="title">${event.name || 'Pinewood Derby'}</div>
+          <div class="troop">Trail Life Troop TX-0521</div>
+          ${formattedDate ? `<div class="date">${formattedDate}</div>` : ''}
+        </div>
+        <div class="categories">
+          ${event.categories
+            .map(
+              (cat) => `
+            <div class="category">
+              <span class="cat-name">${cat}</span>
+              <span class="car-line">Car # __________</span>
+            </div>
+          `
+            )
+            .join('')}
+        </div>
+      </div>
+    `;
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Voting Slips - ${event.name || 'Pinewood Derby'}</title>
+        <style>
+          @page {
+            size: letter landscape;
+            margin: 0.25in;
+          }
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+          }
+          body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          .page {
+            width: 10.5in;
+            height: 8in;
+            display: flex;
+            gap: 0.25in;
+            page-break-after: always;
+          }
+          .page:last-child {
+            page-break-after: auto;
+          }
+          .slip {
+            flex: 1;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 0.3in;
+            display: flex;
+            flex-direction: column;
+          }
+          .header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 0.15in;
+            margin-bottom: 0.2in;
+          }
+          .title {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #1a365d;
+          }
+          .date {
+            font-size: 11pt;
+            color: #555;
+            margin-top: 4px;
+          }
+          .troop {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #333;
+            margin-top: 4px;
+          }
+          .categories {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+          }
+          .category {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0.12in 0;
+            border-bottom: 1px dashed #ccc;
+          }
+          .category:last-child {
+            border-bottom: none;
+          }
+          .cat-name {
+            font-size: 12pt;
+            font-weight: 700;
+            max-width: 55%;
+            word-wrap: break-word;
+          }
+          .car-line {
+            font-size: 11pt;
+            color: #555;
+          }
+          @media print {
+            body { margin: 0; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="page">
+          ${slipHtml}
+          ${slipHtml}
+          ${slipHtml}
+        </div>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.onload = () => {
+      printWindow.print();
+    };
+  };
 
   const handleNameChange = (newName) => {
     onUpdateEvent({ ...event, name: newName });
@@ -159,7 +306,17 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
       </div>
 
       <div className="bg-surface p-6 rounded-lg shadow">
-        <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><ListChecks size={20} /> Categories</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2"><ListChecks size={20} /> Categories</h3>
+          <button
+            className="px-3 py-1.5 text-sm bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handlePrintSlips}
+            disabled={!canPrintSlips}
+            title={canPrintSlips ? 'Print voting slips' : 'Add categories first'}
+          >
+            <Printer size={16} /> Print Slips
+          </button>
+        </div>
         <form onSubmit={handleAddCategory} className="flex gap-2 mb-4">
           <input
             type="text"
