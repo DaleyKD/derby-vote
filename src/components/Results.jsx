@@ -2,7 +2,7 @@ import { useState, Fragment } from 'react';
 import { getVoteTallies, getVotes } from '../storage';
 import { BarChart3, Trophy, Monitor } from 'lucide-react';
 
-export default function Results({ event, allEvents = [], onSelectEvent, onPresentationMode, isPresentation = false }) {
+export default function Results({ event, onPresentationMode, isPresentation = false }) {
   const eventId = event.id || event.year;
   const tallies = getVoteTallies(eventId);
   const votes = getVotes(eventId);
@@ -97,7 +97,7 @@ export default function Results({ event, allEvents = [], onSelectEvent, onPresen
             // Sort cars by vote count (descending), show top 5
             const sortedCars = Object.entries(categoryTallies)
               .sort((a, b) => b[1] - a[1])
-              .filter(([_, votes]) => votes > 0)
+              .filter(([, votes]) => votes > 0)
               .slice(0, 5);
 
             // Calculate place based on vote count (ties get same place)

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getEvent, saveEvent, getAllEvents, getVotes, getCars, createEvent, getEventById, setCurrentEventId, getCurrentEventId, deleteEvent } from './storage';
+import { getEvent, saveEvent, getAllEvents, getCars, createEvent, getEventById, setCurrentEventId, getCurrentEventId, deleteEvent } from './storage';
 import Setup from './components/Setup';
 import Voting from './components/Voting';
 import Results from './components/Results';

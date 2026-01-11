@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getCars, renameCategory } from '../storage';
 import { FileText, ListChecks, Car, Tags, ChevronUp, ChevronDown, Pencil, X, Printer } from 'lucide-react';
 
-export default function Setup({ event, onUpdateEvent, onStartVoting }) {
+export default function Setup({ event, onUpdateEvent }) {
   const [newCategory, setNewCategory] = useState('');
   const [carRange, setCarRange] = useState({ start: 1, end: 20 });
   const [showCarNaming, setShowCarNaming] = useState(false);
@@ -120,7 +120,6 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
     }
   };
 
-  const canStartVoting = event.categories.length > 0 && cars.length > 0;
   const canPrintSlips = event.categories.length > 0;
 
   const handlePrintSlips = () => {

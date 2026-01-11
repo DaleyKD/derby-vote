@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { getSlips, addSlip, removeLastSlip, removeSlipByIndex, getCars } from '../storage';
 import { ClipboardList, Undo2 } from 'lucide-react';
 
-export default function Voting({ event, onRefresh }) {
+export default function Voting({ event }) {
   const eventId = event.id || event.year;
   const cars = getCars(event);
 
