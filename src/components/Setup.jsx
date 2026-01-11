@@ -224,7 +224,7 @@ export default function Setup({ event, onUpdateEvent }) {
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
+            justify-content: flex-start;
           }
           .category {
             display: flex;
