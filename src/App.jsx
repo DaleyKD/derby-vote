@@ -4,7 +4,7 @@ import Setup from './components/Setup';
 import Voting from './components/Voting';
 import Results from './components/Results';
 import DataManager from './components/DataManager';
-import { BarChart3, Vote, Settings, ChevronLeft, ChevronRight, Car, AlertTriangle } from 'lucide-react';
+import { BarChart3, Vote, Settings, ChevronLeft, ChevronRight, Trophy, AlertTriangle } from 'lucide-react';
 
 function App() {
   const currentYear = new Date().getFullYear().toString();
@@ -132,10 +132,10 @@ function App() {
       <aside className={`${sidebarCollapsed ? 'w-14' : 'w-60'} h-screen bg-primary text-white flex flex-col shrink-0 transition-all duration-200`}>
         <div className="p-4 border-b border-white/10 flex items-center overflow-hidden">
           <div className="flex items-center gap-3">
-            <Car size={28} className="shrink-0" />
+            <Trophy size={28} className="shrink-0" />
             <div className={`flex flex-col whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'opacity-0 w-0' : 'opacity-100'}`}>
               <span className="font-bold text-base tracking-tight">Worthy Derby</span>
-              <span className="text-[11px] text-white/70 font-medium">TX-0521</span>
+              <span className="text-[11px] text-white/70 font-medium">Trail Life Troop TX-0521</span>
             </div>
           </div>
         </div>
