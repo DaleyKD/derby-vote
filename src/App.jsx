@@ -4,7 +4,6 @@ import Setup from './components/Setup';
 import Voting from './components/Voting';
 import Results from './components/Results';
 import DataManager from './components/DataManager';
-import './App.css';
 
 function App() {
   const currentYear = new Date().getFullYear().toString();
@@ -110,9 +109,9 @@ function App() {
 
   if (presentationMode) {
     return (
-      <div className="presentation-mode">
+      <div className="fixed inset-0 bg-background z-50 overflow-auto p-8">
         <button
-          className="exit-presentation"
+          className="fixed top-4 right-4 bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer z-[1001] hover:bg-primary-dark transition-colors"
           onClick={() => setPresentationMode(false)}
         >
           ✕ Exit (Esc)
@@ -128,115 +127,117 @@ function App() {
   }
 
   return (
-    <div className={`app ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-      <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
-        <div className="sidebar-header">
-          <div className="logo">
-            <span className="logo-icon">🏎️</span>
-            <div className="logo-text">
-              <span className="logo-title">Worthy Derby</span>
-              <span className="logo-subtitle">TX-0521</span>
+    <div className="h-screen flex bg-background text-text-primary font-sans text-sm overflow-hidden">
+      <aside className={`${sidebarCollapsed ? 'w-14' : 'w-60'} h-screen bg-primary text-white flex flex-col shrink-0 transition-all duration-200`}>
+        <div className="p-4 border-b border-white/10 flex items-center overflow-hidden">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl shrink-0">🏎️</span>
+            <div className={`flex flex-col whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'opacity-0 w-0' : 'opacity-100'}`}>
+              <span className="font-bold text-base tracking-tight">Worthy Derby</span>
+              <span className="text-[11px] text-white/70 font-medium">TX-0521</span>
             </div>
           </div>
         </div>
 
-        <nav className="sidebar-nav">
+        <nav className="flex-1 p-2 flex flex-col gap-0.5">
           <button
-            className={view === 'results' ? 'active' : ''}
+            className={`flex items-center gap-3 w-full py-2.5 px-3 rounded text-left font-medium text-white/85 hover:bg-white/10 hover:text-white transition-colors ${view === 'results' ? 'border-l-6 border-derby-tan bg-white/10 text-white font-bold' : 'border-l-6 border-transparent'} ${sidebarCollapsed ? 'justify-center px-2.5 gap-0' : ''}`}
             onClick={() => setView('results')}
             title="Results"
           >
-            <span className="nav-icon">📊</span>
-            <span className="nav-label">Results</span>
+            <span className="text-lg w-6 min-w-6 text-center">📊</span>
+            <span className={`whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'hidden' : ''}`}>Results</span>
           </button>
           <button
-            className={view === 'voting' ? 'active' : ''}
+            className={`flex items-center gap-3 w-full py-2.5 px-3 rounded text-left font-medium text-white/85 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${view === 'voting' ? 'border-l-6 border-derby-tan bg-white/10 text-white font-bold' : 'border-l-6 border-transparent'} ${sidebarCollapsed ? 'justify-center px-2.5 gap-0' : ''}`}
             onClick={() => setView('voting')}
             disabled={event.categories.length === 0 || getCars(event).length === 0}
             title="Vote"
           >
-            <span className="nav-icon">🗳️</span>
-            <span className="nav-label">Vote</span>
+            <span className="text-lg w-6 min-w-6 text-center">🗳️</span>
+            <span className={`whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'hidden' : ''}`}>Vote</span>
           </button>
         </nav>
 
-        <div className="sidebar-bottom">
-          <div className="sidebar-bottom-row">
+        <div className={`p-2 border-t border-white/10 flex flex-col gap-0.5`}>
+          <div className={`flex items-center gap-1 ${sidebarCollapsed ? 'flex-col gap-0.5' : ''}`}>
             <button
-              className={`sidebar-nav-btn ${view === 'setup' ? 'active' : ''}`}
+              className={`flex items-center gap-3 flex-1 py-2.5 px-3 rounded text-left font-medium text-white/85 hover:bg-white/10 hover:text-white transition-colors ${view === 'setup' ? 'border-l-6 border-derby-tan bg-white/10 text-white font-bold' : 'border-l-6 border-transparent'} ${sidebarCollapsed ? 'w-full justify-center px-0 gap-0' : ''}`}
               onClick={() => setView('setup')}
               title="Setup"
             >
-              <span className="nav-icon">⚙️</span>
-              <span className="nav-label">Setup</span>
+              <span className="text-lg w-6 min-w-6 text-center">⚙️</span>
+              <span className={`whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'hidden' : ''}`}>Setup</span>
             </button>
 
             <button
-              className="collapse-btn"
+              className={`w-10 py-2.5 rounded text-lg text-white/50 hover:bg-white/10 hover:text-white/85 transition-colors ${sidebarCollapsed ? 'hidden' : ''}`}
               onClick={() => setSidebarCollapsed(true)}
               title="Collapse sidebar"
             >
               ◀
             </button>
-          </div>
 
-          <button
-            className="expand-btn"
-            onClick={() => setSidebarCollapsed(false)}
-            title="Expand sidebar"
-          >
-            ▶
-          </button>
+            <button
+              className={`w-full py-2.5 rounded text-lg text-white/50 hover:bg-white/10 hover:text-white/85 transition-colors ${sidebarCollapsed ? 'flex items-center justify-center' : 'hidden'}`}
+              onClick={() => setSidebarCollapsed(false)}
+              title="Expand sidebar"
+            >
+              ▶
+            </button>
+          </div>
         </div>
       </aside>
 
-      <main>
-        <header className="main-header">
-          <h1>
+      <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        <header className="flex items-center justify-between px-6 py-4 bg-surface border-b border-border shadow-sm">
+          <h1 className="text-xl font-semibold text-text-primary m-0">
             {view === 'results' && '📊 Results'}
             {view === 'voting' && '🗳️ Enter Votes'}
             {view === 'setup' && '⚙️ Event Setup'}
           </h1>
 
-          <div className="header-event-selector">
+          <div className="relative">
             <button
-              className="event-selector-btn"
+              className="flex items-center gap-3 px-4 py-2 bg-background border border-border rounded hover:border-primary transition-colors text-left"
               onClick={() => setShowEventPicker(!showEventPicker)}
             >
-              <span className="event-name">{event.name}</span>
-              <span className="event-date">{event.eventDate}</span>
-              <span className="dropdown-arrow">{showEventPicker ? '▲' : '▼'}</span>
+              <span className="font-semibold text-text-primary">{event.name}</span>
+              <span className="text-text-light text-sm">{event.eventDate}</span>
+              <span className="text-text-light text-xs ml-1">{showEventPicker ? '▲' : '▼'}</span>
             </button>
 
             {showEventPicker && (
-              <div className="event-picker-dropdown">
-                <div className="event-list">
+              <div className="absolute top-full right-0 mt-2 bg-surface border border-border rounded-lg shadow-lg z-50 min-w-[300px]">
+                <div className="max-h-60 overflow-y-auto border-b border-border">
                   {allEvents.map((e) => (
                     <button
                       key={e.id || e.year}
-                      className={`event-option ${(e.id || e.year) === (event.id || event.year) ? 'active' : ''}`}
+                      className={`flex justify-between items-center w-full px-4 py-3 text-left hover:bg-background transition-colors ${(e.id || e.year) === (event.id || event.year) ? 'bg-primary/10 border-l-4 border-l-primary' : ''}`}
                       onClick={() => handleSelectEvent(e)}
                     >
-                      <span className="event-option-name">{e.name}</span>
-                      <span className="event-option-date">{e.eventDate || e.year}</span>
+                      <span className="font-medium text-text-primary">{e.name}</span>
+                      <span className="text-text-light text-sm">{e.eventDate || e.year}</span>
                     </button>
                   ))}
                 </div>
-                <div className="event-create">
-                  <h4>Create New Event</h4>
+                <div className="p-4 flex flex-col gap-3">
+                  <h4 className="m-0 text-sm font-semibold text-text-primary">Create New Event</h4>
                   <input
                     type="text"
                     placeholder="Event name..."
                     value={newEventName}
                     onChange={(e) => setNewEventName(e.target.value)}
+                    className="w-full px-3 py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
                   <input
                     type="date"
                     value={newEventDate}
                     onChange={(e) => setNewEventDate(e.target.value)}
+                    className="w-full px-3 py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
                   <button
-                    className="btn btn-primary"
+                    className="w-full px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleCreateEvent}
                     disabled={!newEventName.trim()}
                   >
@@ -248,7 +249,7 @@ function App() {
           </div>
         </header>
 
-        <div className="main-content">
+        <div className="flex-1 overflow-y-auto p-6">
           {view === 'results' && (
             <Results
               event={event}
@@ -274,35 +275,33 @@ function App() {
               />
               <DataManager onDataImported={handleDataImported} />
 
-              <div className="danger-zone">
-                <h3>⚠️ Danger Zone</h3>
-                <div className="danger-zone-content">
-                  <div className="danger-zone-item">
-                    <div className="danger-zone-info">
-                      <strong>Delete this event</strong>
-                      <p>Permanently delete "{event.name}" and all its votes. This cannot be undone.</p>
-                    </div>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => setShowDeleteConfirm(true)}
-                    >
-                      Delete Event
-                    </button>
+              <div className="mt-8 p-6 bg-surface rounded-lg shadow">
+                <h3 className="text-lg font-semibold text-danger mb-4">⚠️ Danger Zone</h3>
+                <div className="flex items-center justify-between gap-4 p-4 bg-background rounded">
+                  <div>
+                    <strong className="text-text-primary">Delete this event</strong>
+                    <p className="text-text-light text-sm mt-1">Permanently delete "{event.name}" and all its votes. This cannot be undone.</p>
                   </div>
+                  <button
+                    className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors shrink-0"
+                    onClick={() => setShowDeleteConfirm(true)}
+                  >
+                    Delete Event
+                  </button>
                 </div>
               </div>
 
               {showDeleteConfirm && (
-                <div className="modal-overlay" onClick={() => setShowDeleteConfirm(false)}>
-                  <div className="modal" onClick={(e) => e.stopPropagation()}>
-                    <h3>Delete Event?</h3>
-                    <p>Are you sure you want to delete <strong>{event.name}</strong>?</p>
-                    <p className="warning-text">This will permanently delete all votes and data for this event.</p>
-                    <div className="modal-actions">
-                      <button className="btn btn-secondary" onClick={() => setShowDeleteConfirm(false)}>
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowDeleteConfirm(false)}>
+                  <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+                    <h3 className="text-lg font-semibold text-text-primary mb-4">Delete Event?</h3>
+                    <p className="text-text-primary mb-2">Are you sure you want to delete <strong>{event.name}</strong>?</p>
+                    <p className="text-danger text-sm mb-6">This will permanently delete all votes and data for this event.</p>
+                    <div className="flex justify-end gap-3">
+                      <button className="px-4 py-2 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors" onClick={() => setShowDeleteConfirm(false)}>
                         Cancel
                       </button>
-                      <button className="btn btn-danger" onClick={() => {
+                      <button className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors" onClick={() => {
                         handleDeleteEvent(event);
                         setShowDeleteConfirm(false);
                       }}>

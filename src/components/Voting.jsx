@@ -94,95 +94,95 @@ export default function Voting({ event, onRefresh }) {
   };
 
   return (
-    <div className="voting">
-      <div className="vote-stats-bar">
-        <span className="stat"><strong>{totalVotes}</strong> total votes</span>
-        <span className="stat"><strong>{slips.length}</strong> slips entered</span>
+    <div className="space-y-6">
+      <div className="flex gap-6 p-4 bg-surface rounded-lg shadow">
+        <span className="text-text-primary"><strong className="text-primary">{totalVotes}</strong> total votes</span>
+        <span className="text-text-primary"><strong className="text-primary">{slips.length}</strong> slips entered</span>
       </div>
 
-      <form onSubmit={handleSubmitSlip} className="slip-entry">
-          <div className="slip-card">
-            <div className="slip-header">
-              <span className="slip-title">Voting Slip</span>
-              <span className="slip-hint">Enter car number for each category</span>
-            </div>
-
-            <div className="slip-fields">
-              {event.categories.map((category, index) => {
-                const value = slip[category];
-                const isInvalid = value && !isValidCar(value);
-                return (
-                  <div key={category} className={`slip-row ${isInvalid ? 'has-error' : ''}`}>
-                    <label className="slip-label">{category}</label>
-                    <div className="slip-input-wrapper">
-                      <input
-                        ref={index === 0 ? firstInputRef : null}
-                        type="number"
-                        className={`slip-input ${isInvalid ? 'invalid' : ''}`}
-                        value={value}
-                        onChange={(e) => handleSlipChange(category, e.target.value)}
-                        onKeyDown={(e) => handleKeyDown(e, index)}
-                        placeholder="—"
-                      />
-                      {isInvalid && (
-                        <span className="slip-input-error">Car {value} doesn't exist</span>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="slip-actions">
-              <button
-                type="button"
-                className="btn btn-secondary slip-clear-btn"
-                onClick={handleClear}
-              >
-                Clear
-              </button>
-              <button
-                type="submit"
-                className="btn slip-submit-btn"
-                disabled={filledCount === 0 || hasInvalid}
-              >
-                Submit Slip
-              </button>
-            </div>
+      <form onSubmit={handleSubmitSlip}>
+        <div className="bg-surface rounded-lg shadow overflow-hidden">
+          <div className="p-4 bg-primary text-white flex justify-between items-center">
+            <span className="font-semibold text-lg">Voting Slip</span>
+            <span className="text-white/70 text-sm">Enter car number for each category</span>
           </div>
 
-          {hasInvalid && (
-            <p className="slip-error">
-              Invalid car number. Valid range: {cars[0]}-{cars[cars.length - 1]}
-            </p>
-          )}
-        </form>
+          <div className="divide-y divide-border">
+            {event.categories.map((category, index) => {
+              const value = slip[category];
+              const isInvalid = value && !isValidCar(value);
+              return (
+                <div key={category} className={`p-4 flex items-center gap-4 ${isInvalid ? 'bg-danger/5' : ''}`}>
+                  <label className="flex-1 font-medium text-text-primary">{category}</label>
+                  <div className="flex flex-col items-end gap-1">
+                    <input
+                      ref={index === 0 ? firstInputRef : null}
+                      type="number"
+                      className={`slip-input w-24 px-3 py-2 text-center text-lg border rounded focus:outline-none focus:ring-2 focus:ring-primary/20 ${isInvalid ? 'border-danger text-danger' : 'border-border focus:border-primary'}`}
+                      value={value}
+                      onChange={(e) => handleSlipChange(category, e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e, index)}
+                      placeholder="—"
+                    />
+                    {isInvalid && (
+                      <span className="text-danger text-xs">Car {value} doesn't exist</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="p-4 bg-background flex justify-end gap-3">
+            <button
+              type="button"
+              className="px-4 py-2 bg-white text-text-primary font-medium border border-border rounded hover:bg-gray-50 transition-colors"
+              onClick={handleClear}
+            >
+              Clear
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={filledCount === 0 || hasInvalid}
+            >
+              Submit Slip
+            </button>
+          </div>
+        </div>
+
+        {hasInvalid && (
+          <p className="mt-2 text-danger text-sm">
+            Invalid car number. Valid range: {cars[0]}-{cars[cars.length - 1]}
+          </p>
+        )}
+      </form>
 
       {slips.length > 0 && (
-        <div className="recent-votes">
-          <div className="recent-header">
-            <h4>Recent Entries</h4>
-            <button type="button" onClick={handleUndo} className="btn btn-sm undo-btn">↩ Undo Last</button>
+        <div className="bg-surface p-6 rounded-lg shadow">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-text-primary">📋 Recent Entries</h3>
+            <button type="button" onClick={handleUndo} className="px-3 py-1.5 text-sm bg-white text-danger border border-danger rounded hover:bg-danger hover:text-white transition-colors">↩ Undo Last</button>
           </div>
-          <div className="recent-slips">
+          <div className="flex flex-wrap gap-3 max-h-60 overflow-y-auto">
             {slips.slice(0, 10).map((slip, i) => (
-              <div key={slip.timestamp} className={`recent-slip ${i === 0 ? 'latest' : ''}`}>
-                <div className="recent-slip-header">
+              <div key={slip.timestamp} className={`bg-white p-3 rounded border min-w-[140px] shrink-0 flex flex-col gap-1 ${i === 0 ? 'border-primary border-2 bg-primary/5' : 'border-border'}`}>
+                <div className="flex justify-between items-center text-xs text-text-light border-b border-border pb-1.5 mb-1">
                   <span>{new Date(slip.timestamp).toLocaleTimeString()}</span>
                   <button
                     type="button"
-                    className="slip-remove-btn"
+                    className="text-text-light/50 hover:text-danger transition-colors"
                     onClick={() => setSlipToRemove(i)}
                     title="Remove this slip"
                   >
                     ✕
                   </button>
                 </div>
-                <div className="recent-slip-votes">
+                <div className="flex flex-col gap-0.5">
                   {slip.votes.map((v, j) => (
-                    <div key={j} className="recent-vote-item">
-                      <span className="category">{v.category}</span>
-                      <span className="car-num">{v.carNumber}</span>
+                    <div key={j} className="flex justify-between gap-3 text-sm py-0.5">
+                      <span className="text-text-light truncate max-w-24">{v.category}</span>
+                      <span className="font-bold text-primary">{v.carNumber}</span>
                     </div>
                   ))}
                 </div>
@@ -193,23 +193,23 @@ export default function Voting({ event, onRefresh }) {
       )}
 
       {slipToRemove !== null && (
-        <div className="modal-overlay" onClick={() => setSlipToRemove(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Remove Slip?</h3>
-            <p>Are you sure you want to remove this slip from <strong>{new Date(slips[slipToRemove].timestamp).toLocaleTimeString()}</strong>?</p>
-            <div className="slip-preview">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setSlipToRemove(null)}>
+          <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Remove Slip?</h3>
+            <p className="text-text-primary mb-4">Are you sure you want to remove this slip from <strong>{new Date(slips[slipToRemove].timestamp).toLocaleTimeString()}</strong>?</p>
+            <div className="flex flex-wrap gap-2 p-3 bg-background rounded mb-6">
               {slips[slipToRemove].votes.map((v, j) => (
-                <div key={j} className="recent-vote-item">
-                  <span className="category">{v.category}</span>
-                  <span className="car-num">{v.carNumber}</span>
+                <div key={j} className="flex items-center gap-2 px-2 py-1 bg-white rounded text-sm">
+                  <span className="text-text-light">{v.category}</span>
+                  <span className="font-semibold text-primary">{v.carNumber}</span>
                 </div>
               ))}
             </div>
-            <div className="modal-actions">
-              <button className="btn btn-secondary" onClick={() => setSlipToRemove(null)}>
+            <div className="flex justify-end gap-3">
+              <button className="px-4 py-2 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors" onClick={() => setSlipToRemove(null)}>
                 Cancel
               </button>
-              <button className="btn btn-danger" onClick={() => {
+              <button className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors" onClick={() => {
                 handleRemoveSlip(slipToRemove);
                 setSlipToRemove(null);
               }}>

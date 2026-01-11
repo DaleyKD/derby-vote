@@ -65,74 +65,77 @@ export default function DataManager({ onDataImported }) {
   };
 
   return (
-    <div className="data-manager">
-      <h3>💾 Data Management</h3>
-      <div className="data-actions">
-        <button onClick={() => setShowExportModal(true)} className="btn btn-secondary">
+    <div className="mt-6 bg-surface p-6 rounded-lg shadow">
+      <h3 className="text-lg font-semibold text-text-primary mb-4">💾 Data Management</h3>
+      <div className="flex gap-3 mb-4">
+        <button onClick={() => setShowExportModal(true)} className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors">
           ⬇️ Export Data
         </button>
-        <label className="btn btn-secondary import-label">
+        <label className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors cursor-pointer">
           ⬆️ Import Data
           <input
             type="file"
             accept=".json"
             onChange={handleImport}
-            style={{ display: 'none' }}
+            className="hidden"
           />
         </label>
       </div>
-      <p className="data-note">
+      <p className="text-text-light text-sm">
         Export your data regularly to keep a backup. You can import previous backups to restore data.
       </p>
 
       {showExportModal && (
-        <div className="modal-overlay" onClick={() => setShowExportModal(false)}>
-          <div className="modal export-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>📤 Export Data</h3>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowExportModal(false)}>
+          <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold text-text-primary mb-6">📤 Export Data</h3>
 
-            <div className="export-filename">
-              <label>File Name</label>
-              <div className="filename-input">
+            <div className="mb-6">
+              <label className="block font-medium text-text-primary mb-2">File Name</label>
+              <div className="flex items-center">
                 <input
                   type="text"
                   value={exportFileName}
                   onChange={(e) => setExportFileName(e.target.value)}
+                  className="flex-1 px-3 py-2 border border-border rounded-l text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
-                <span className="filename-ext">.json</span>
+                <span className="px-3 py-2 bg-background border border-l-0 border-border rounded-r text-text-light text-sm">.json</span>
               </div>
             </div>
 
-            <div className="export-events">
-              <label>Select Events to Export</label>
-              <div className="export-event-list">
-                <label className="export-event-option">
+            <div className="mb-6">
+              <label className="block font-medium text-text-primary mb-2">Select Events to Export</label>
+              <div className="max-h-48 overflow-y-auto border border-border rounded divide-y divide-border">
+                <label className="flex items-center gap-3 p-3 hover:bg-background cursor-pointer">
                   <input
                     type="checkbox"
                     checked={exportSelection.includes('all')}
                     onChange={() => toggleExportSelection('all')}
+                    className="w-4 h-4 accent-primary"
                   />
-                  <span>All Events</span>
+                  <span className="font-medium text-text-primary">All Events</span>
                 </label>
                 {allEvents.map((evt) => (
-                  <label key={evt.id || evt.year} className="export-event-option">
+                  <label key={evt.id || evt.year} className="flex items-center gap-3 p-3 hover:bg-background cursor-pointer">
                     <input
                       type="checkbox"
                       checked={exportSelection.includes('all') || exportSelection.includes(evt.id || evt.year)}
                       onChange={() => toggleExportSelection(evt.id || evt.year)}
+                      className="w-4 h-4 accent-primary"
                     />
-                    <span>{evt.name}</span>
-                    <span className="export-event-date">{evt.eventDate || evt.year}</span>
+                    <span className="flex-1 text-text-primary">{evt.name}</span>
+                    <span className="text-text-light text-sm">{evt.eventDate || evt.year}</span>
                   </label>
                 ))}
               </div>
             </div>
 
-            <div className="modal-actions">
-              <button className="btn btn-secondary" onClick={() => setShowExportModal(false)}>
+            <div className="flex justify-end gap-3">
+              <button className="px-4 py-2 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors" onClick={() => setShowExportModal(false)}>
                 Cancel
               </button>
               <button
-                className="btn btn-primary"
+                className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleExport}
                 disabled={exportSelection.length === 0}
               >
