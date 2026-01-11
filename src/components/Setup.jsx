@@ -75,6 +75,17 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
     }
   };
 
+  const handleMoveCategory = (index, direction) => {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= event.categories.length) return;
+
+    const newCategories = [...event.categories];
+    const [movedCategory] = newCategories.splice(index, 1);
+    newCategories.splice(newIndex, 0, movedCategory);
+
+    onUpdateEvent({ ...event, categories: newCategories });
+  };
+
   const handleAddCarRange = () => {
     const carNames = { ...(event.carNames || {}) };
     for (let i = carRange.start; i <= carRange.end; i++) {
@@ -163,8 +174,27 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
           {event.categories.length === 0 ? (
             <p className="text-text-light italic">No categories yet. Add some above!</p>
           ) : (
-            event.categories.map((category) => (
+            event.categories.map((category, index) => (
               <div key={category} className="flex items-center justify-between p-3 bg-background rounded">
+                {/* Reorder buttons */}
+                <div className="flex flex-col mr-2">
+                  <button
+                    className="w-5 h-5 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    onClick={() => handleMoveCategory(index, -1)}
+                    disabled={index === 0}
+                    title="Move up"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    className="w-5 h-5 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    onClick={() => handleMoveCategory(index, 1)}
+                    disabled={index === event.categories.length - 1}
+                    title="Move down"
+                  >
+                    ▼
+                  </button>
+                </div>
                 {editingCategory === category ? (
                   <div className="flex items-center gap-2 flex-1 mr-2">
                     <input
