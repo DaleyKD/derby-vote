@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { getCars } from '../storage';
+import { getCars, renameCategory } from '../storage';
 
 export default function Setup({ event, onUpdateEvent, onStartVoting }) {
   const [newCategory, setNewCategory] = useState('');
   const [carRange, setCarRange] = useState({ start: 1, end: 20 });
   const [showCarNaming, setShowCarNaming] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [editingCategoryName, setEditingCategoryName] = useState('');
 
   // Derive cars array from carNames keys
   const cars = getCars(event);
@@ -27,6 +29,50 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
       categories: event.categories.filter(c => c !== category),
     };
     onUpdateEvent(updated);
+  };
+
+  const handleStartEditCategory = (category) => {
+    setEditingCategory(category);
+    setEditingCategoryName(category);
+  };
+
+  const handleCancelEditCategory = () => {
+    setEditingCategory(null);
+    setEditingCategoryName('');
+  };
+
+  const handleSaveEditCategory = () => {
+    const trimmedName = editingCategoryName.trim();
+    if (!trimmedName) {
+      handleCancelEditCategory();
+      return;
+    }
+    // Don't save if the name hasn't changed
+    if (trimmedName === editingCategory) {
+      handleCancelEditCategory();
+      return;
+    }
+    // Check for duplicate names
+    if (event.categories.includes(trimmedName)) {
+      alert('A category with this name already exists.');
+      return;
+    }
+    // Use the renameCategory function to update category and all votes
+    const eventId = event.id || event.year;
+    const updatedEvent = renameCategory(eventId, editingCategory, trimmedName);
+    if (updatedEvent) {
+      onUpdateEvent(updatedEvent);
+    }
+    handleCancelEditCategory();
+  };
+
+  const handleEditCategoryKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSaveEditCategory();
+    } else if (e.key === 'Escape') {
+      handleCancelEditCategory();
+    }
   };
 
   const handleAddCarRange = () => {
@@ -119,13 +165,45 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
           ) : (
             event.categories.map((category) => (
               <div key={category} className="flex items-center justify-between p-3 bg-background rounded">
-                <span className="font-medium text-text-primary">{category}</span>
-                <button
-                  className="w-6 h-6 flex items-center justify-center text-text-light hover:text-danger hover:bg-danger/10 rounded transition-colors"
-                  onClick={() => handleRemoveCategory(category)}
-                >
-                  ✕
-                </button>
+                {editingCategory === category ? (
+                  <div className="flex items-center gap-2 flex-1 mr-2">
+                    <input
+                      type="text"
+                      value={editingCategoryName}
+                      onChange={(e) => setEditingCategoryName(e.target.value)}
+                      onKeyDown={handleEditCategoryKeyDown}
+                      onBlur={handleSaveEditCategory}
+                      autoFocus
+                      className="flex-1 px-2 py-1 border border-primary rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    />
+                  </div>
+                ) : (
+                  <span
+                    className="font-medium text-text-primary cursor-pointer hover:text-primary flex-1"
+                    onClick={() => handleStartEditCategory(category)}
+                    title="Click to rename"
+                  >
+                    {category}
+                  </span>
+                )}
+                <div className="flex items-center gap-1">
+                  {editingCategory !== category && (
+                    <button
+                      className="w-6 h-6 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors"
+                      onClick={() => handleStartEditCategory(category)}
+                      title="Rename category"
+                    >
+                      ✎
+                    </button>
+                  )}
+                  <button
+                    className="w-6 h-6 flex items-center justify-center text-text-light hover:text-danger hover:bg-danger/10 rounded transition-colors"
+                    onClick={() => handleRemoveCategory(category)}
+                    title="Remove category"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
             ))
           )}

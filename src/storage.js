@@ -130,6 +130,32 @@ export function removeCategory(year, categoryName) {
   return event;
 }
 
+// Rename a category in an event
+export function renameCategory(eventId, oldName, newName) {
+  const data = getAllData();
+  const event = data.events[eventId];
+  if (!event) return null;
+
+  // Update category name in the categories array
+  const categoryIndex = event.categories.indexOf(oldName);
+  if (categoryIndex === -1) return event;
+
+  event.categories[categoryIndex] = newName;
+
+  // Update all votes that reference the old category name
+  if (event.slips) {
+    event.slips = event.slips.map(slip => ({
+      ...slip,
+      votes: slip.votes.map(vote =>
+        vote.category === oldName ? { ...vote, category: newName } : vote
+      )
+    }));
+  }
+
+  saveAllData(data);
+  return event;
+}
+
 // Get car numbers from carNames keys (sorted)
 export function getCars(event) {
   return Object.keys(event.carNames || {}).map(Number).sort((a, b) => a - b);
