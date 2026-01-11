@@ -4,6 +4,7 @@ import Setup from './components/Setup';
 import Voting from './components/Voting';
 import Results from './components/Results';
 import DataManager from './components/DataManager';
+import { BarChart3, Vote, Settings, ChevronLeft, ChevronRight, Car, AlertTriangle } from 'lucide-react';
 
 function App() {
   const currentYear = new Date().getFullYear().toString();
@@ -131,7 +132,7 @@ function App() {
       <aside className={`${sidebarCollapsed ? 'w-14' : 'w-60'} h-screen bg-primary text-white flex flex-col shrink-0 transition-all duration-200`}>
         <div className="p-4 border-b border-white/10 flex items-center overflow-hidden">
           <div className="flex items-center gap-3">
-            <span className="text-2xl shrink-0">🏎️</span>
+            <Car size={28} className="shrink-0" />
             <div className={`flex flex-col whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'opacity-0 w-0' : 'opacity-100'}`}>
               <span className="font-bold text-base tracking-tight">Worthy Derby</span>
               <span className="text-[11px] text-white/70 font-medium">TX-0521</span>
@@ -145,7 +146,7 @@ function App() {
             onClick={() => setView('results')}
             title="Results"
           >
-            <span className="text-lg w-6 min-w-6 text-center">📊</span>
+            <BarChart3 size={20} className="w-6 min-w-6" />
             <span className={`whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'hidden' : ''}`}>Results</span>
           </button>
           <button
@@ -154,7 +155,7 @@ function App() {
             disabled={event.categories.length === 0 || getCars(event).length === 0}
             title="Vote"
           >
-            <span className="text-lg w-6 min-w-6 text-center">🗳️</span>
+            <Vote size={20} className="w-6 min-w-6" />
             <span className={`whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'hidden' : ''}`}>Vote</span>
           </button>
         </nav>
@@ -166,24 +167,24 @@ function App() {
               onClick={() => setView('setup')}
               title="Setup"
             >
-              <span className="text-lg w-6 min-w-6 text-center">⚙️</span>
+              <Settings size={20} className="w-6 min-w-6" />
               <span className={`whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'hidden' : ''}`}>Setup</span>
             </button>
 
             <button
-              className={`w-10 py-2.5 rounded text-lg text-white/50 hover:bg-white/10 hover:text-white/85 transition-colors ${sidebarCollapsed ? 'hidden' : ''}`}
+              className={`w-10 py-2.5 rounded text-white/50 hover:bg-white/10 hover:text-white/85 transition-colors flex items-center justify-center ${sidebarCollapsed ? 'hidden' : ''}`}
               onClick={() => setSidebarCollapsed(true)}
               title="Collapse sidebar"
             >
-              ◀
+              <ChevronLeft size={20} />
             </button>
 
             <button
-              className={`w-full py-2.5 rounded text-lg text-white/50 hover:bg-white/10 hover:text-white/85 transition-colors ${sidebarCollapsed ? 'flex items-center justify-center' : 'hidden'}`}
+              className={`w-full py-2.5 rounded text-white/50 hover:bg-white/10 hover:text-white/85 transition-colors ${sidebarCollapsed ? 'flex items-center justify-center' : 'hidden'}`}
               onClick={() => setSidebarCollapsed(false)}
               title="Expand sidebar"
             >
-              ▶
+              <ChevronRight size={20} />
             </button>
           </div>
         </div>
@@ -191,10 +192,10 @@ function App() {
 
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         <header className="flex items-center justify-between px-6 py-4 bg-surface border-b border-border shadow-sm">
-          <h1 className="text-xl font-semibold text-text-primary m-0">
-            {view === 'results' && '📊 Results'}
-            {view === 'voting' && '🗳️ Enter Votes'}
-            {view === 'setup' && '⚙️ Event Setup'}
+          <h1 className="text-xl font-semibold text-text-primary m-0 flex items-center gap-2">
+            {view === 'results' && <><BarChart3 size={24} className="inline" /> Results</>}
+            {view === 'voting' && <><Vote size={24} className="inline" /> Enter Votes</>}
+            {view === 'setup' && <><Settings size={24} className="inline" /> Event Setup</>}
           </h1>
 
           <div className="relative">
@@ -276,7 +277,7 @@ function App() {
               <DataManager onDataImported={handleDataImported} />
 
               <div className="mt-8 p-6 bg-surface rounded-lg shadow">
-                <h3 className="text-lg font-semibold text-danger mb-4">⚠️ Danger Zone</h3>
+                <h3 className="text-lg font-semibold text-danger mb-4 flex items-center gap-2"><AlertTriangle size={20} /> Danger Zone</h3>
                 <div className="flex items-center justify-between gap-4 p-4 bg-background rounded">
                   <div>
                     <strong className="text-text-primary">Delete this event</strong>

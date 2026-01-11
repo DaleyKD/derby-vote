@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { exportData, importData, getAllEvents } from '../storage';
+import { Database, Download, Upload, FileOutput } from 'lucide-react';
 
 export default function DataManager({ onDataImported }) {
   const [showExportModal, setShowExportModal] = useState(false);
@@ -66,13 +67,13 @@ export default function DataManager({ onDataImported }) {
 
   return (
     <div className="mt-6 bg-surface p-6 rounded-lg shadow">
-      <h3 className="text-lg font-semibold text-text-primary mb-4">💾 Data Management</h3>
+      <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><Database size={20} /> Data Management</h3>
       <div className="flex gap-3 mb-4">
-        <button onClick={() => setShowExportModal(true)} className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors">
-          ⬇️ Export Data
+        <button onClick={() => setShowExportModal(true)} className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors flex items-center gap-2">
+          <Download size={16} /> Export Data
         </button>
-        <label className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors cursor-pointer">
-          ⬆️ Import Data
+        <label className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors cursor-pointer flex items-center gap-2">
+          <Upload size={16} /> Import Data
           <input
             type="file"
             accept=".json"
@@ -88,7 +89,7 @@ export default function DataManager({ onDataImported }) {
       {showExportModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowExportModal(false)}>
           <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-text-primary mb-6">📤 Export Data</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-6 flex items-center gap-2"><FileOutput size={20} /> Export Data</h3>
 
             <div className="mb-6">
               <label className="block font-medium text-text-primary mb-2">File Name</label>

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { getSlips, addSlip, removeLastSlip, removeSlipByIndex, getCars } from '../storage';
+import { ClipboardList, Undo2 } from 'lucide-react';
 
 export default function Voting({ event, onRefresh }) {
   const eventId = event.id || event.year;
@@ -161,8 +162,8 @@ export default function Voting({ event, onRefresh }) {
       {slips.length > 0 && (
         <div className="bg-surface p-6 rounded-lg shadow">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-text-primary">📋 Recent Entries</h3>
-            <button type="button" onClick={handleUndo} className="px-3 py-1.5 text-sm bg-white text-danger border border-danger rounded hover:bg-danger hover:text-white transition-colors">↩ Undo Last</button>
+            <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2"><ClipboardList size={20} /> Recent Entries</h3>
+            <button type="button" onClick={handleUndo} className="px-3 py-1.5 text-sm bg-white text-danger border border-danger rounded hover:bg-danger hover:text-white transition-colors flex items-center gap-1"><Undo2 size={14} /> Undo Last</button>
           </div>
           <div className="flex flex-wrap gap-3 max-h-60 overflow-y-auto">
             {slips.slice(0, 10).map((slip, i) => (

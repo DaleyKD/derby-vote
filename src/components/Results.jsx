@@ -1,5 +1,6 @@
 import { useState, Fragment } from 'react';
 import { getVoteTallies, getVotes } from '../storage';
+import { BarChart3, Trophy, Monitor } from 'lucide-react';
 
 export default function Results({ event, allEvents = [], onSelectEvent, onPresentationMode, isPresentation = false }) {
   const eventId = event.id || event.year;
@@ -60,10 +61,10 @@ export default function Results({ event, allEvents = [], onSelectEvent, onPresen
   return (
     <div className={`${isPresentation ? 'max-w-[1400px] mx-auto' : ''}`}>
       <div className="flex justify-end items-center mb-4">
-        {isPresentation && <h2 className="text-5xl font-bold text-primary text-center flex-1">📊 Results</h2>}
+        {isPresentation && <h2 className="text-5xl font-bold text-primary text-center flex-1 flex items-center justify-center gap-3"><BarChart3 size={48} /> Results</h2>}
         {!isPresentation && onPresentationMode && (
-          <button className="px-4 py-2 bg-primary text-white font-medium rounded hover:bg-primary-dark transition-colors" onClick={onPresentationMode}>
-            🖥️ Presentation Mode
+          <button className="px-4 py-2 bg-primary text-white font-medium rounded hover:bg-primary-dark transition-colors flex items-center gap-2" onClick={onPresentationMode}>
+            <Monitor size={18} /> Presentation Mode
           </button>
         )}
       </div>
@@ -116,7 +117,7 @@ export default function Results({ event, allEvents = [], onSelectEvent, onPresen
                   {category}
                   {winner && (
                     <span className={`inline-flex items-center gap-1 px-3 py-1 bg-derby-green text-white rounded font-semibold ${isPresentation ? 'text-lg px-4 py-2' : 'text-sm'}`}>
-                      🏆 Car {winner.cars.join(', ')} ({winner.votes} votes)
+                      <Trophy size={isPresentation ? 20 : 14} /> Car {winner.cars.join(', ')} ({winner.votes} votes)
                     </span>
                   )}
                 </h4>

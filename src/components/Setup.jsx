@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { getCars, renameCategory } from '../storage';
+import { FileText, ListChecks, Car, Tags, ChevronUp, ChevronDown, Pencil, X } from 'lucide-react';
 
 export default function Setup({ event, onUpdateEvent, onStartVoting }) {
   const [newCategory, setNewCategory] = useState('');
@@ -133,7 +134,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
   return (
     <div className="space-y-6">
       <div className="bg-surface p-6 rounded-lg shadow">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">📝 Event Details</h3>
+        <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><FileText size={20} /> Event Details</h3>
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <label className="font-medium text-text-primary min-w-[100px]">Event Name:</label>
@@ -158,7 +159,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
       </div>
 
       <div className="bg-surface p-6 rounded-lg shadow">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">📋 Categories</h3>
+        <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><ListChecks size={20} /> Categories</h3>
         <form onSubmit={handleAddCategory} className="flex gap-2 mb-4">
           <input
             type="text"
@@ -184,7 +185,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
                     disabled={index === 0}
                     title="Move up"
                   >
-                    ▲
+                    <ChevronUp size={14} />
                   </button>
                   <button
                     className="w-5 h-5 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
@@ -192,7 +193,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
                     disabled={index === event.categories.length - 1}
                     title="Move down"
                   >
-                    ▼
+                    <ChevronDown size={14} />
                   </button>
                 </div>
                 {editingCategory === category ? (
@@ -223,7 +224,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
                       onClick={() => handleStartEditCategory(category)}
                       title="Rename category"
                     >
-                      ✎
+                      <Pencil size={14} />
                     </button>
                   )}
                   <button
@@ -231,7 +232,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
                     onClick={() => handleRemoveCategory(category)}
                     title="Remove category"
                   >
-                    ✕
+                    <X size={14} />
                   </button>
                 </div>
               </div>
@@ -241,7 +242,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
       </div>
 
       <div className="bg-surface p-6 rounded-lg shadow">
-        <h3 className="text-lg font-semibold text-text-primary mb-4">🚗 Car Numbers</h3>
+        <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><Car size={20} /> Car Numbers</h3>
         <div className="flex flex-wrap items-center gap-3 mb-4">
           <label className="flex items-center gap-2 text-sm font-medium text-text-primary">
             From:
@@ -308,7 +309,7 @@ export default function Setup({ event, onUpdateEvent, onStartVoting }) {
       {cars.length > 0 && (
         <div className="bg-surface p-6 rounded-lg shadow">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-semibold text-text-primary">🏷️ Car Names (Optional)</h3>
+            <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2"><Tags size={20} /> Car Names (Optional)</h3>
             <button
               className="px-3 py-1 text-sm text-primary border border-primary rounded hover:bg-primary hover:text-white transition-colors"
               onClick={() => setShowCarNaming(!showCarNaming)}
