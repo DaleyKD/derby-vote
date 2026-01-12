@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { getCars, renameCategory } from '../storage';
+import { getTroopIdentifier } from '../config';
 import { FileText, ListChecks, Car, Tags, ChevronUp, ChevronDown, Pencil, X, Printer } from 'lucide-react';
 
-export default function Setup({ event, onUpdateEvent }) {
+export default function Setup({ event, onUpdateEvent, troopConfig }) {
   const [newCategory, setNewCategory] = useState('');
   const [carRange, setCarRange] = useState({ start: 1, end: 20 });
   const [showCarNaming, setShowCarNaming] = useState(false);
@@ -137,12 +138,19 @@ export default function Setup({ event, onUpdateEvent }) {
         })
       : '';
 
+    // Generate troop display string
+    const troopIdentifier = troopConfig ? getTroopIdentifier(troopConfig) : 'TX-0521';
+    const charterOrg = troopConfig?.charterOrg || '';
+    const troopLocation = troopConfig ? (troopConfig.troopCity ? `${troopConfig.troopCity}, ${troopConfig.troopState}` : troopConfig.troopState) : '';
+
     // Generate HTML for print
     const slipHtml = `
       <div class="slip">
         <div class="header">
           <div class="title">${event.name || 'Pinewood Derby'}</div>
-          <div class="troop">Trail Life Troop TX-0521</div>
+          <div class="troop">Trail Life Troop ${troopIdentifier}</div>
+          ${charterOrg ? `<div class="location">${charterOrg}</div>` : ''}
+          ${troopLocation ? `<div class="location">${troopLocation}</div>` : ''}
           ${formattedDate ? `<div class="date">${formattedDate}</div>` : ''}
         </div>
         <div class="categories">
@@ -209,15 +217,20 @@ export default function Setup({ event, onUpdateEvent }) {
             font-weight: bold;
             color: #1a365d;
           }
-          .date {
-            font-size: 11pt;
-            color: #555;
-            margin-top: 4px;
-          }
           .troop {
             font-size: 12pt;
             font-weight: 600;
             color: #333;
+            margin-top: 4px;
+          }
+          .location {
+            font-size: 10pt;
+            color: #666;
+            margin-top: 2px;
+          }
+          .date {
+            font-size: 11pt;
+            color: #555;
             margin-top: 4px;
           }
           .categories {

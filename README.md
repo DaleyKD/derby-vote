@@ -1,13 +1,14 @@
 # Worthy Derby Voting App
 
-A web application for running derby voting events. Built for Trail Life Troop TX-0521's annual Worthy Derby competition.
+A web application for running derby voting events. Built for Trail Life troops' annual Worthy Derby competitions.
 
 ## Features
 
+- **Troop Customization**: Configure your troop's state, number, city, and charter organization
 - **Event Management**: Create and manage multiple derby events with custom names and dates
 - **Category Setup**: Define voting categories (e.g., "Most Creative", "Best Paint Job", "Coolest Design") with ability to rename and reorder
 - **Car Registration**: Register cars by number with optional names for winner announcements
-- **Print Voting Slips**: Generate printable ballot slips for voters
+- **Print Voting Slips**: Generate printable ballot slips for voters with your troop information
 - **Vote Entry**: Fast slip-based voting interface - enter all category votes from a single ballot at once
 - **Live Results**: Real-time vote tallies with visual bar charts showing top 5 cars per category
 - **Presentation Mode**: Full-screen results display for projecting at events
@@ -40,6 +41,25 @@ Opens the app at `http://localhost:5173`
 npm run build
 npm run preview
 ```
+
+### Configuring Your Troop
+
+The application is configured for Troop TX-0521 (Van Alstyne, TX). To customize for a different troop, edit `troop-config.json` in the project root:
+
+- **troopState**: Two-letter state code (required, must be 2 uppercase letters)
+- **troopNumber**: Four-digit troop number (required, must be exactly 4 digits)
+- **troopCity**: City name (optional)
+- **charterOrg**: Charter organization name (optional)
+- **troopWebsite**: URL for the troop's website (optional, must start with http:// or https://)
+- **charterWebsite**: URL for the charter organization's website (optional, must start with http:// or https://)
+
+This information will appear in:
+- Browser tab title (e.g., "Worthy Derby Voting | Troop TX-0521")
+- Sidebar header: "Trail Life Troop TX-0521" (links to troopWebsite if provided)
+- Sidebar footer: charter org (links to charterWebsite if provided) and city/state
+- Printed voting slips (with charter org and city/state if provided)
+
+**Note**: After editing the config file, you must rebuild the application (`npm run build`) for changes to take effect, as the config is bundled into the application at build time.
 
 ## Usage
 

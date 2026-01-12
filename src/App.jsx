@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getEvent, saveEvent, getAllEvents, getCars, createEvent, getEventById, setCurrentEventId, getCurrentEventId, deleteEvent, clearAllData } from './storage';
+import { loadTroopConfig, getTroopIdentifier } from './config';
 import Setup from './components/Setup';
 import Voting from './components/Voting';
 import Results from './components/Results';
@@ -8,6 +9,7 @@ import { BarChart3, Vote, Settings, ChevronLeft, ChevronRight, Trophy, AlertTria
 
 function App() {
   const currentYear = new Date().getFullYear().toString();
+  const [troopConfig] = useState(() => loadTroopConfig());
 
   // Initialize with existing events or create default
   const [allEvents, setAllEvents] = useState(() => {
@@ -39,6 +41,13 @@ function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showClearAllConfirm, setShowClearAllConfirm] = useState(false);
+
+  // Update page title with troop identifier
+  useEffect(() => {
+    if (troopConfig) {
+      document.title = `Worthy Derby Voting | Troop ${getTroopIdentifier(troopConfig)}`;
+    }
+  }, [troopConfig]);
 
   const handleUpdateEvent = (updatedEvent) => {
     saveEvent(updatedEvent);
@@ -146,7 +155,20 @@ function App() {
             <Trophy size={28} className="shrink-0" />
             <div className={`flex flex-col whitespace-nowrap transition-opacity duration-150 ${sidebarCollapsed ? 'opacity-0 w-0' : 'opacity-100'}`}>
               <span className="font-bold text-base tracking-tight">Worthy Derby</span>
-              <span className="text-[11px] text-white/70 font-medium">Trail Life Troop TX-0521</span>
+              {troopConfig?.troopWebsite ? (
+                <a
+                  href={troopConfig.troopWebsite}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-white/70 font-medium hover:text-white hover:underline transition-colors"
+                >
+                  Trail Life Troop {getTroopIdentifier(troopConfig)}
+                </a>
+              ) : (
+                <span className="text-[11px] text-white/70 font-medium">
+                  Trail Life Troop {troopConfig ? getTroopIdentifier(troopConfig) : 'TX-0521'}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -171,7 +193,7 @@ function App() {
           </button>
         </nav>
 
-        <div className={`p-2 border-t border-white/10 flex flex-col gap-0.5`}>
+        <div className={`p-2 border-t border-white/10 flex flex-col`}>
           <div className={`flex items-center gap-1 ${sidebarCollapsed ? 'flex-col gap-0.5' : ''}`}>
             <button
               className={`flex items-center gap-3 flex-1 py-2.5 px-3 rounded text-left font-medium text-white/85 hover:bg-white/10 hover:text-white transition-colors ${view === 'setup' ? 'border-l-6 border-derby-tan bg-white/10 text-white font-bold' : 'border-l-6 border-transparent'} ${sidebarCollapsed ? 'w-full justify-center px-0 gap-0' : ''}`}
@@ -198,6 +220,35 @@ function App() {
               <ChevronRight size={20} />
             </button>
           </div>
+
+          {/* Troop Info Footer */}
+          {(troopConfig?.charterOrg || troopConfig?.troopCity) && (
+            <div className={`mt-2 px-3 pt-2 border-t border-white/10 transition-opacity duration-150 ${sidebarCollapsed ? 'opacity-0 hidden' : 'opacity-100'}`}>
+              <div className="flex flex-col gap-0.5 text-center">
+                {troopConfig?.charterOrg && (
+                  troopConfig.charterWebsite ? (
+                    <a
+                      href={troopConfig.charterWebsite}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-white/50 font-normal leading-tight hover:text-white/80 hover:underline transition-colors"
+                    >
+                      {troopConfig.charterOrg}
+                    </a>
+                  ) : (
+                    <span className="text-[10px] text-white/50 font-normal leading-tight">
+                      {troopConfig.charterOrg}
+                    </span>
+                  )
+                )}
+                {(troopConfig?.troopCity || troopConfig?.troopState) && (
+                  <span className="text-[10px] text-white/50 font-normal leading-tight">
+                    {troopConfig.troopCity ? `${troopConfig.troopCity}, ${troopConfig.troopState}` : troopConfig.troopState}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -284,6 +335,7 @@ function App() {
                 event={event}
                 onUpdateEvent={handleUpdateEvent}
                 onStartVoting={() => setView('voting')}
+                troopConfig={troopConfig}
               />
               <DataManager onDataImported={handleDataImported} />
 
