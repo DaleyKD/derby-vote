@@ -1,6 +1,6 @@
 # Worthy Derby Voting App
 
-A web application for running pinewood derby voting events. Built for Trail Life Troop TX-0521's annual Worthy Derby competition.
+A web application for running derby voting events. Built for Trail Life Troop TX-0521's annual Worthy Derby competition.
 
 ## Features
 
@@ -66,7 +66,7 @@ npm run preview
 
 ## Data Storage
 
-All data is stored in the browser's localStorage under the key `derby-vote-data`. Use the Export/Import feature in Setup to backup your data or transfer between devices.
+All data is stored in the browser's localStorage under the key `derby-vote-data`. Use the Export/Import feature in Setup to backup your data or transfer between devices. The Danger Zone section provides options to delete individual events or clear all local data.
 
 ## Tech Stack
 

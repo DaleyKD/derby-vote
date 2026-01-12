@@ -231,6 +231,11 @@ export function deleteEvent(year) {
   saveAllData(data);
 }
 
+// Clear all data from localStorage
+export function clearAllData() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
 // Slips are stored directly in the event as event.slips
 // Each slip is { timestamp, votes: [{ category, carNumber }, ...] }
 

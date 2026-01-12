@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getEvent, saveEvent, getAllEvents, getCars, createEvent, getEventById, setCurrentEventId, getCurrentEventId, deleteEvent } from './storage';
+import { getEvent, saveEvent, getAllEvents, getCars, createEvent, getEventById, setCurrentEventId, getCurrentEventId, deleteEvent, clearAllData } from './storage';
 import Setup from './components/Setup';
 import Voting from './components/Voting';
 import Results from './components/Results';
@@ -38,6 +38,7 @@ function App() {
   const [newEventDate, setNewEventDate] = useState(new Date().toISOString().split('T')[0]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showClearAllConfirm, setShowClearAllConfirm] = useState(false);
 
   const handleUpdateEvent = (updatedEvent) => {
     saveEvent(updatedEvent);
@@ -95,6 +96,16 @@ function App() {
       }
     }
     setShowEventPicker(false);
+  };
+
+  const handleClearAllData = () => {
+    clearAllData();
+    // Reset to a fresh state with a new default event
+    const newEvent = createEvent(`Worthy Derby ${currentYear}`, new Date().toISOString().split('T')[0]);
+    setAllEvents([newEvent]);
+    setEvent(newEvent);
+    setShowClearAllConfirm(false);
+    setView('setup');
   };
 
   // Toggle presentation mode with Escape key
@@ -278,17 +289,31 @@ function App() {
 
               <div className="mt-8 p-6 bg-surface rounded-lg shadow">
                 <h3 className="text-lg font-semibold text-danger mb-4 flex items-center gap-2"><AlertTriangle size={20} /> Danger Zone</h3>
-                <div className="flex items-center justify-between gap-4 p-4 bg-background rounded">
-                  <div>
-                    <strong className="text-text-primary">Delete this event</strong>
-                    <p className="text-text-light text-sm mt-1">Permanently delete "{event.name}" and all its votes. This cannot be undone.</p>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-4 p-4 bg-background rounded">
+                    <div>
+                      <strong className="text-text-primary">Delete this event</strong>
+                      <p className="text-text-light text-sm mt-1">Permanently delete "{event.name}" and all its votes. This cannot be undone.</p>
+                    </div>
+                    <button
+                      className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors shrink-0"
+                      onClick={() => setShowDeleteConfirm(true)}
+                    >
+                      Delete Event
+                    </button>
                   </div>
-                  <button
-                    className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors shrink-0"
-                    onClick={() => setShowDeleteConfirm(true)}
-                  >
-                    Delete Event
-                  </button>
+                  <div className="flex items-center justify-between gap-4 p-4 bg-background rounded">
+                    <div>
+                      <strong className="text-text-primary">Clear all local data</strong>
+                      <p className="text-text-light text-sm mt-1">Delete all events, votes, and settings from this browser. This cannot be undone.</p>
+                    </div>
+                    <button
+                      className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors shrink-0"
+                      onClick={() => setShowClearAllConfirm(true)}
+                    >
+                      Clear All Data
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -307,6 +332,25 @@ function App() {
                         setShowDeleteConfirm(false);
                       }}>
                         Delete Event
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {showClearAllConfirm && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowClearAllConfirm(false)}>
+                  <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+                    <h3 className="text-lg font-semibold text-text-primary mb-4">Clear All Data?</h3>
+                    <p className="text-text-primary mb-2">Are you sure you want to delete <strong>all events and data</strong> from this browser?</p>
+                    <p className="text-text-primary text-sm mb-2">Consider exporting a backup first using the Export Data button above.</p>
+                    <p className="text-danger text-sm mb-6">This action cannot be undone.</p>
+                    <div className="flex justify-end gap-3">
+                      <button className="px-4 py-2 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors" onClick={() => setShowClearAllConfirm(false)}>
+                        Cancel
+                      </button>
+                      <button className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors" onClick={handleClearAllData}>
+                        Clear All Data
                       </button>
                     </div>
                   </div>
