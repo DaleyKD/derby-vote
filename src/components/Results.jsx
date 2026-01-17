@@ -60,25 +60,25 @@ export default function Results({ event, onPresentationMode, isPresentation = fa
 
   return (
     <div className={`${isPresentation ? 'max-w-[1400px] mx-auto' : ''}`}>
-      <div className="flex justify-end items-center mb-4">
-        {isPresentation && <h2 className="text-5xl font-bold text-primary text-center flex-1 flex items-center justify-center gap-3"><BarChart3 size={48} /> Results</h2>}
+      <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-2 mb-4">
+        {isPresentation && <h2 className="text-3xl md:text-5xl font-bold text-primary text-center flex-1 flex items-center justify-center gap-3"><BarChart3 size={48} className="hidden md:block" /><BarChart3 size={32} className="md:hidden" /> Results</h2>}
         {!isPresentation && onPresentationMode && (
-          <button className="px-4 py-2 bg-primary text-white font-medium rounded hover:bg-primary-dark transition-colors flex items-center gap-2" onClick={onPresentationMode}>
-            <Monitor size={18} /> Presentation Mode
+          <button className="px-3 md:px-4 py-2.5 md:py-2 bg-primary text-white font-medium rounded hover:bg-primary-dark transition-colors flex items-center gap-2 min-h-[44px] text-sm md:text-base" onClick={onPresentationMode}>
+            <Monitor size={18} /> <span className="hidden sm:inline">Presentation Mode</span><span className="sm:hidden">Present</span>
           </button>
         )}
       </div>
 
-      <h3 className={`font-semibold text-text-primary ${isPresentation ? 'text-3xl mb-2 text-center' : 'text-xl mb-1'}`}>{event.name}</h3>
-      <div className={`flex items-center justify-between mb-6 ${isPresentation ? 'justify-center gap-8' : ''}`}>
-        <p className={`text-text-light ${isPresentation ? 'text-xl' : ''}`}>Total votes: {votes.length}</p>
+      <h3 className={`font-semibold text-text-primary ${isPresentation ? 'text-2xl md:text-3xl mb-2 text-center' : 'text-lg md:text-xl mb-1'}`}>{event.name}</h3>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 md:mb-6 ${isPresentation ? 'sm:justify-center sm:gap-8' : ''}`}>
+        <p className={`text-text-light ${isPresentation ? 'text-lg md:text-xl' : 'text-sm md:text-base'}`}>Total votes: {votes.length}</p>
         {Object.keys(event.carNames || {}).length > 0 && (
-          <label className={`flex items-center gap-2 cursor-pointer font-medium text-text-primary ${isPresentation ? 'text-lg' : ''}`}>
+          <label className={`flex items-center gap-2 cursor-pointer font-medium text-text-primary ${isPresentation ? 'text-base md:text-lg' : 'text-sm md:text-base'}`}>
             <input
               type="checkbox"
               checked={showCarNames}
               onChange={(e) => setShowCarNames(e.target.checked)}
-              className={`accent-primary ${isPresentation ? 'w-5 h-5' : 'w-4 h-4'}`}
+              className={`accent-primary ${isPresentation ? 'w-5 h-5' : 'w-5 h-5 md:w-4 md:h-4'}`}
             />
             Show car names
           </label>
@@ -88,7 +88,7 @@ export default function Results({ event, onPresentationMode, isPresentation = fa
       {event.categories.length === 0 ? (
         <p className="text-text-light italic">No categories set up yet.</p>
       ) : (
-        <div className={`space-y-6 ${isPresentation ? 'space-y-8' : ''}`}>
+        <div className={`space-y-4 md:space-y-6 ${isPresentation ? 'space-y-6 md:space-y-8' : ''}`}>
           {event.categories.map((category) => {
             const winner = getWinner(category);
             const maxVotes = getMaxVotes(category);
@@ -112,31 +112,32 @@ export default function Results({ event, onPresentationMode, isPresentation = fa
             };
 
             return (
-              <div key={category} className={`bg-surface p-6 rounded-lg shadow ${isPresentation ? 'p-8' : ''}`}>
-                <h4 className={`font-semibold text-text-primary flex flex-wrap items-center justify-between gap-3 mb-4 ${isPresentation ? 'text-2xl mb-6' : 'text-base'}`}>
-                  {category}
+              <div key={category} className={`bg-surface p-4 md:p-6 rounded-lg shadow ${isPresentation ? 'p-5 md:p-8' : ''}`}>
+                <h4 className={`font-semibold text-text-primary flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center justify-between gap-2 sm:gap-3 mb-3 md:mb-4 ${isPresentation ? 'text-xl md:text-2xl mb-4 md:mb-6' : 'text-sm md:text-base'}`}>
+                  <span className="break-words">{category}</span>
                   {winner && (
-                    <span className={`inline-flex items-center gap-1 px-3 py-1 bg-derby-green text-white rounded font-semibold ${isPresentation ? 'text-lg px-4 py-2' : 'text-sm'}`}>
-                      <Trophy size={isPresentation ? 20 : 14} /> Car {winner.cars.join(', ')} ({winner.votes} votes)
+                    <span className={`inline-flex items-center gap-1 px-2 md:px-3 py-1 bg-derby-green text-white rounded font-semibold ${isPresentation ? 'text-base md:text-lg px-3 md:px-4 py-1.5 md:py-2' : 'text-xs md:text-sm'}`}>
+                      <Trophy size={isPresentation ? 18 : 14} className="shrink-0" />
+                      <span className="truncate">Car {winner.cars.join(', ')} ({winner.votes})</span>
                     </span>
                   )}
                 </h4>
 
-                <div className={`grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 items-center ${isPresentation ? 'gap-x-6 gap-y-3' : ''}`}>
+                <div className={`grid grid-cols-[auto_1fr] gap-x-2 md:gap-x-3 gap-y-1.5 md:gap-y-2 items-center ${isPresentation ? 'gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-3' : ''}`}>
                   {sortedCars.length === 0 ? (
-                    <p className="text-text-light italic col-span-2">No votes yet</p>
+                    <p className="text-text-light italic col-span-2 text-sm">No votes yet</p>
                   ) : (
                     sortedCars.map(([car, votes], index) => {
                       const place = getPlace(index, votes);
                       return (
                         <Fragment key={car}>
-                          <span className={`font-medium text-text-primary text-sm truncate max-w-[200px] ${isPresentation ? 'max-w-[400px] text-xl' : ''}`}>{getCarDisplay(car)}</span>
-                          <div className={`h-7 ${isPresentation ? 'h-12' : ''}`}>
+                          <span className={`font-medium text-text-primary text-xs md:text-sm truncate max-w-[120px] md:max-w-[200px] ${isPresentation ? 'max-w-[200px] md:max-w-[400px] text-base md:text-xl' : ''}`}>{getCarDisplay(car)}</span>
+                          <div className={`h-6 md:h-7 ${isPresentation ? 'h-8 md:h-12' : ''}`}>
                             <div
-                              className={`h-full ${placeColors[place] || 'bg-primary/50'} flex items-center justify-end pr-2.5 rounded transition-all duration-500`}
+                              className={`h-full ${placeColors[place] || 'bg-primary/50'} flex items-center justify-end pr-2 md:pr-2.5 rounded transition-all duration-500`}
                               style={{ width: `${(votes / maxVotes) * 100}%`, minWidth: 'fit-content' }}
                             >
-                              <span className={`font-semibold text-sm ${placeTextColors[place] || 'text-white'} ${isPresentation ? 'text-xl' : ''}`}>{votes}</span>
+                              <span className={`font-semibold text-xs md:text-sm ${placeTextColors[place] || 'text-white'} ${isPresentation ? 'text-base md:text-xl' : ''}`}>{votes}</span>
                             </div>
                           </div>
                         </Fragment>

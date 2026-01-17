@@ -66,13 +66,13 @@ export default function DataManager({ onDataImported }) {
   };
 
   return (
-    <div className="mt-6 bg-surface p-6 rounded-lg shadow">
-      <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><Database size={20} /> Data Management</h3>
-      <div className="flex gap-3 mb-4">
-        <button onClick={() => setShowExportModal(true)} className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors flex items-center gap-2">
+    <div className="mt-4 md:mt-6 bg-surface p-4 md:p-6 rounded-lg shadow">
+      <h3 className="text-base md:text-lg font-semibold text-text-primary mb-3 md:mb-4 flex items-center gap-2"><Database size={20} /> Data Management</h3>
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-3 md:mb-4">
+        <button onClick={() => setShowExportModal(true)} className="px-4 py-2.5 md:py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors flex items-center justify-center gap-2 min-h-[44px] md:min-h-0 text-sm">
           <Download size={16} /> Export Data
         </button>
-        <label className="px-4 py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors cursor-pointer flex items-center gap-2">
+        <label className="px-4 py-2.5 md:py-2 bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors cursor-pointer flex items-center justify-center gap-2 min-h-[44px] md:min-h-0 text-sm">
           <Upload size={16} /> Import Data
           <input
             type="file"
@@ -82,61 +82,61 @@ export default function DataManager({ onDataImported }) {
           />
         </label>
       </div>
-      <p className="text-text-light text-sm">
+      <p className="text-text-light text-xs md:text-sm">
         Export your data regularly to keep a backup. You can import previous backups to restore data.
       </p>
 
       {showExportModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowExportModal(false)}>
-          <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-text-primary mb-6 flex items-center gap-2"><FileOutput size={20} /> Export Data</h3>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3" onClick={() => setShowExportModal(false)}>
+          <div className="bg-surface p-4 md:p-6 rounded-lg shadow-lg max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-base md:text-lg font-semibold text-text-primary mb-4 md:mb-6 flex items-center gap-2"><FileOutput size={20} /> Export Data</h3>
 
-            <div className="mb-6">
-              <label className="block font-medium text-text-primary mb-2">File Name</label>
+            <div className="mb-4 md:mb-6">
+              <label className="block font-medium text-text-primary mb-2 text-sm md:text-base">File Name</label>
               <div className="flex items-center">
                 <input
                   type="text"
                   value={exportFileName}
                   onChange={(e) => setExportFileName(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-border rounded-l text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="flex-1 px-3 py-2.5 md:py-2 border border-border rounded-l text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 min-w-0"
                 />
-                <span className="px-3 py-2 bg-background border border-l-0 border-border rounded-r text-text-light text-sm">.json</span>
+                <span className="px-2 md:px-3 py-2.5 md:py-2 bg-background border border-l-0 border-border rounded-r text-text-light text-sm">.json</span>
               </div>
             </div>
 
-            <div className="mb-6">
-              <label className="block font-medium text-text-primary mb-2">Select Events to Export</label>
+            <div className="mb-4 md:mb-6">
+              <label className="block font-medium text-text-primary mb-2 text-sm md:text-base">Select Events to Export</label>
               <div className="max-h-48 overflow-y-auto border border-border rounded divide-y divide-border">
-                <label className="flex items-center gap-3 p-3 hover:bg-background cursor-pointer">
+                <label className="flex items-center gap-3 p-3 hover:bg-background cursor-pointer min-h-[44px]">
                   <input
                     type="checkbox"
                     checked={exportSelection.includes('all')}
                     onChange={() => toggleExportSelection('all')}
-                    className="w-4 h-4 accent-primary"
+                    className="w-5 h-5 md:w-4 md:h-4 accent-primary shrink-0"
                   />
-                  <span className="font-medium text-text-primary">All Events</span>
+                  <span className="font-medium text-text-primary text-sm md:text-base">All Events</span>
                 </label>
                 {allEvents.map((evt) => (
-                  <label key={evt.id || evt.year} className="flex items-center gap-3 p-3 hover:bg-background cursor-pointer">
+                  <label key={evt.id || evt.year} className="flex items-center gap-3 p-3 hover:bg-background cursor-pointer min-h-[44px]">
                     <input
                       type="checkbox"
                       checked={exportSelection.includes('all') || exportSelection.includes(evt.id || evt.year)}
                       onChange={() => toggleExportSelection(evt.id || evt.year)}
-                      className="w-4 h-4 accent-primary"
+                      className="w-5 h-5 md:w-4 md:h-4 accent-primary shrink-0"
                     />
-                    <span className="flex-1 text-text-primary">{evt.name}</span>
-                    <span className="text-text-light text-sm">{evt.eventDate || evt.year}</span>
+                    <span className="flex-1 text-text-primary text-sm truncate">{evt.name}</span>
+                    <span className="text-text-light text-xs md:text-sm shrink-0">{evt.eventDate || evt.year}</span>
                   </label>
                 ))}
               </div>
             </div>
 
-            <div className="flex justify-end gap-3">
-              <button className="px-4 py-2 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors" onClick={() => setShowExportModal(false)}>
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
+              <button className="px-4 py-2.5 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors min-h-[44px] text-sm" onClick={() => setShowExportModal(false)}>
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2.5 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] text-sm"
                 onClick={handleExport}
                 disabled={exportSelection.length === 0}
               >

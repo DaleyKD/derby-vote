@@ -95,17 +95,17 @@ export default function Voting({ event }) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-6 p-4 bg-surface rounded-lg shadow">
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-wrap gap-3 md:gap-6 p-3 md:p-4 bg-surface rounded-lg shadow">
         <span className="text-text-primary"><strong className="text-primary">{totalVotes}</strong> total votes</span>
         <span className="text-text-primary"><strong className="text-primary">{slips.length}</strong> slips entered</span>
       </div>
 
       <form onSubmit={handleSubmitSlip}>
         <div className="bg-surface rounded-lg shadow overflow-hidden">
-          <div className="p-4 bg-primary text-white flex justify-between items-center">
-            <span className="font-semibold text-lg">Voting Slip</span>
-            <span className="text-white/70 text-sm">Enter car number for each category</span>
+          <div className="p-3 md:p-4 bg-primary text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
+            <span className="font-semibold text-base md:text-lg">Voting Slip</span>
+            <span className="text-white/70 text-xs md:text-sm">Enter car number for each category</span>
           </div>
 
           <div className="divide-y divide-border">
@@ -113,13 +113,15 @@ export default function Voting({ event }) {
               const value = slip[category];
               const isInvalid = value && !isValidCar(value);
               return (
-                <div key={category} className={`p-4 flex items-center gap-4 ${isInvalid ? 'bg-danger/5' : ''}`}>
-                  <label className="flex-1 font-medium text-text-primary">{category}</label>
+                <div key={category} className={`p-3 md:p-4 flex items-center gap-3 md:gap-4 ${isInvalid ? 'bg-danger/5' : ''}`}>
+                  <label className="flex-1 font-medium text-text-primary text-sm md:text-base">{category}</label>
                   <div className="flex flex-col items-end gap-1">
                     <input
                       ref={index === 0 ? firstInputRef : null}
                       type="number"
-                      className={`slip-input w-24 px-3 py-2 text-center text-lg border rounded focus:outline-none focus:ring-2 focus:ring-primary/20 ${isInvalid ? 'border-danger text-danger' : 'border-border focus:border-primary'}`}
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      className={`slip-input w-20 md:w-24 px-2 md:px-3 py-2.5 md:py-2 text-center text-base md:text-lg border rounded focus:outline-none focus:ring-2 focus:ring-primary/20 ${isInvalid ? 'border-danger text-danger' : 'border-border focus:border-primary'}`}
                       value={value}
                       onChange={(e) => handleSlipChange(category, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, index)}
@@ -134,17 +136,17 @@ export default function Voting({ event }) {
             })}
           </div>
 
-          <div className="p-4 bg-background flex justify-end gap-3">
+          <div className="p-3 md:p-4 bg-background flex justify-end gap-2 md:gap-3">
             <button
               type="button"
-              className="px-4 py-2 bg-white text-text-primary font-medium border border-border rounded hover:bg-gray-50 transition-colors"
+              className="px-3 md:px-4 py-2.5 md:py-2 bg-white text-text-primary font-medium border border-border rounded hover:bg-gray-50 transition-colors min-h-[44px]"
               onClick={handleClear}
             >
               Clear
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 md:px-6 py-2.5 md:py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               disabled={filledCount === 0 || hasInvalid}
             >
               Submit Slip
@@ -160,19 +162,19 @@ export default function Voting({ event }) {
       </form>
 
       {slips.length > 0 && (
-        <div className="bg-surface p-6 rounded-lg shadow">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2"><ClipboardList size={20} /> Recent Entries</h3>
-            <button type="button" onClick={handleUndo} className="px-3 py-1.5 text-sm bg-white text-danger border border-danger rounded hover:bg-danger hover:text-white transition-colors flex items-center gap-1"><Undo2 size={14} /> Undo Last</button>
+        <div className="bg-surface p-4 md:p-6 rounded-lg shadow">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+            <h3 className="text-base md:text-lg font-semibold text-text-primary flex items-center gap-2"><ClipboardList size={20} /> Recent Entries</h3>
+            <button type="button" onClick={handleUndo} className="px-3 py-2 text-sm bg-white text-danger border border-danger rounded hover:bg-danger hover:text-white transition-colors flex items-center gap-1 min-h-[44px]"><Undo2 size={14} /> Undo Last</button>
           </div>
-          <div className="flex flex-wrap gap-3 max-h-60 overflow-y-auto">
+          <div className="flex flex-wrap gap-2 md:gap-3 max-h-60 overflow-y-auto">
             {slips.slice(0, 10).map((slip, i) => (
-              <div key={slip.timestamp} className={`bg-white p-3 rounded border min-w-[140px] shrink-0 flex flex-col gap-1 ${i === 0 ? 'border-primary border-2 bg-primary/5' : 'border-border'}`}>
+              <div key={slip.timestamp} className={`bg-white p-2.5 md:p-3 rounded border min-w-[120px] md:min-w-[140px] shrink-0 flex flex-col gap-1 ${i === 0 ? 'border-primary border-2 bg-primary/5' : 'border-border'}`}>
                 <div className="flex justify-between items-center text-xs text-text-light border-b border-border pb-1.5 mb-1">
                   <span>{new Date(slip.timestamp).toLocaleTimeString()}</span>
                   <button
                     type="button"
-                    className="text-text-light/50 hover:text-danger transition-colors"
+                    className="text-text-light/50 hover:text-danger transition-colors p-1 -m-1"
                     onClick={() => setSlipToRemove(i)}
                     title="Remove this slip"
                   >
@@ -181,8 +183,8 @@ export default function Voting({ event }) {
                 </div>
                 <div className="flex flex-col gap-0.5">
                   {slip.votes.map((v, j) => (
-                    <div key={j} className="flex justify-between gap-3 text-sm py-0.5">
-                      <span className="text-text-light truncate max-w-24">{v.category}</span>
+                    <div key={j} className="flex justify-between gap-2 md:gap-3 text-sm py-0.5">
+                      <span className="text-text-light truncate max-w-20 md:max-w-24">{v.category}</span>
                       <span className="font-bold text-primary">{v.carNumber}</span>
                     </div>
                   ))}
@@ -194,10 +196,10 @@ export default function Voting({ event }) {
       )}
 
       {slipToRemove !== null && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setSlipToRemove(null)}>
-          <div className="bg-surface p-6 rounded-lg shadow-lg max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">Remove Slip?</h3>
-            <p className="text-text-primary mb-4">Are you sure you want to remove this slip from <strong>{new Date(slips[slipToRemove].timestamp).toLocaleTimeString()}</strong>?</p>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3" onClick={() => setSlipToRemove(null)}>
+          <div className="bg-surface p-4 md:p-6 rounded-lg shadow-lg max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-base md:text-lg font-semibold text-text-primary mb-4">Remove Slip?</h3>
+            <p className="text-text-primary mb-4 text-sm md:text-base">Are you sure you want to remove this slip from <strong>{new Date(slips[slipToRemove].timestamp).toLocaleTimeString()}</strong>?</p>
             <div className="flex flex-wrap gap-2 p-3 bg-background rounded mb-6">
               {slips[slipToRemove].votes.map((v, j) => (
                 <div key={j} className="flex items-center gap-2 px-2 py-1 bg-white rounded text-sm">
@@ -206,11 +208,11 @@ export default function Voting({ event }) {
                 </div>
               ))}
             </div>
-            <div className="flex justify-end gap-3">
-              <button className="px-4 py-2 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors" onClick={() => setSlipToRemove(null)}>
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
+              <button className="px-4 py-2.5 bg-background text-text-primary font-medium rounded hover:bg-border transition-colors min-h-[44px]" onClick={() => setSlipToRemove(null)}>
                 Cancel
               </button>
-              <button className="px-4 py-2 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors" onClick={() => {
+              <button className="px-4 py-2.5 bg-danger text-white font-semibold rounded hover:bg-danger/80 transition-colors min-h-[44px]" onClick={() => {
                 handleRemoveSlip(slipToRemove);
                 setSlipToRemove(null);
               }}>

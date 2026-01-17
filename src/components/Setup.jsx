@@ -291,37 +291,37 @@ export default function Setup({ event, onUpdateEvent, troopConfig }) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-surface p-6 rounded-lg shadow">
-        <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><FileText size={20} /> Event Details</h3>
-        <div className="space-y-4">
+    <div className="space-y-4 md:space-y-6">
+      <div className="bg-surface p-4 md:p-6 rounded-lg shadow">
+        <h3 className="text-base md:text-lg font-semibold text-text-primary mb-3 md:mb-4 flex items-center gap-2"><FileText size={20} /> Event Details</h3>
+        <div className="space-y-3 md:space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <label className="font-medium text-text-primary min-w-[100px]">Event Name:</label>
+            <label className="font-medium text-text-primary text-sm md:text-base min-w-[100px]">Event Name:</label>
             <input
               type="text"
               value={event.name}
               onChange={(e) => handleNameChange(e.target.value)}
               placeholder="Event name..."
-              className="flex-1 px-3 py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="flex-1 px-3 py-2.5 md:py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <label className="font-medium text-text-primary min-w-[100px]">Event Date:</label>
+            <label className="font-medium text-text-primary text-sm md:text-base min-w-[100px]">Event Date:</label>
             <input
               type="date"
               value={event.eventDate || ''}
               onChange={(e) => handleDateChange(e.target.value)}
-              className="px-3 py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="px-3 py-2.5 md:py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>
       </div>
 
-      <div className="bg-surface p-6 rounded-lg shadow">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2"><ListChecks size={20} /> Categories</h3>
+      <div className="bg-surface p-4 md:p-6 rounded-lg shadow">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3 md:mb-4">
+          <h3 className="text-base md:text-lg font-semibold text-text-primary flex items-center gap-2"><ListChecks size={20} /> Categories</h3>
           <button
-            className="px-3 py-1.5 text-sm bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 py-2 md:py-1.5 text-sm bg-background text-text-primary font-medium border border-border rounded hover:border-primary transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] md:min-h-0"
             onClick={handlePrintSlips}
             disabled={!canPrintSlips}
             title={canPrintSlips ? 'Print voting slips' : 'Add categories first'}
@@ -329,40 +329,40 @@ export default function Setup({ event, onUpdateEvent, troopConfig }) {
             <Printer size={16} /> Print Slips
           </button>
         </div>
-        <form onSubmit={handleAddCategory} className="flex gap-2 mb-4">
+        <form onSubmit={handleAddCategory} className="flex flex-col sm:flex-row gap-2 mb-3 md:mb-4">
           <input
             type="text"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="e.g., Most Creative, Best Paint Job"
-            className="flex-1 px-3 py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="flex-1 px-3 py-2.5 md:py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
-          <button type="submit" className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors">Add Category</button>
+          <button type="submit" className="px-4 py-2.5 md:py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors min-h-[44px] md:min-h-0">Add Category</button>
         </form>
 
         <div className="space-y-2">
           {event.categories.length === 0 ? (
-            <p className="text-text-light italic">No categories yet. Add some above!</p>
+            <p className="text-text-light italic text-sm">No categories yet. Add some above!</p>
           ) : (
             event.categories.map((category, index) => (
-              <div key={category} className="flex items-center justify-between p-3 bg-background rounded">
+              <div key={category} className="flex items-center justify-between p-2.5 md:p-3 bg-background rounded gap-2">
                 {/* Reorder buttons */}
-                <div className="flex flex-col mr-2">
+                <div className="flex flex-col mr-1 md:mr-2">
                   <button
-                    className="w-5 h-5 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-7 h-7 md:w-5 md:h-5 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                     onClick={() => handleMoveCategory(index, -1)}
                     disabled={index === 0}
                     title="Move up"
                   >
-                    <ChevronUp size={14} />
+                    <ChevronUp size={16} className="md:w-3.5 md:h-3.5" />
                   </button>
                   <button
-                    className="w-5 h-5 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="w-7 h-7 md:w-5 md:h-5 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                     onClick={() => handleMoveCategory(index, 1)}
                     disabled={index === event.categories.length - 1}
                     title="Move down"
                   >
-                    <ChevronDown size={14} />
+                    <ChevronDown size={16} className="md:w-3.5 md:h-3.5" />
                   </button>
                 </div>
                 {editingCategory === category ? (
@@ -374,34 +374,34 @@ export default function Setup({ event, onUpdateEvent, troopConfig }) {
                       onKeyDown={handleEditCategoryKeyDown}
                       onBlur={handleSaveEditCategory}
                       autoFocus
-                      className="flex-1 px-2 py-1 border border-primary rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="flex-1 px-2 py-2 md:py-1 border border-primary rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                   </div>
                 ) : (
                   <span
-                    className="font-medium text-text-primary cursor-pointer hover:text-primary flex-1"
+                    className="font-medium text-text-primary cursor-pointer hover:text-primary flex-1 text-sm md:text-base truncate"
                     onClick={() => handleStartEditCategory(category)}
                     title="Click to rename"
                   >
                     {category}
                   </span>
                 )}
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5 md:gap-1">
                   {editingCategory !== category && (
                     <button
-                      className="w-6 h-6 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors"
+                      className="w-8 h-8 md:w-6 md:h-6 flex items-center justify-center text-text-light hover:text-primary hover:bg-primary/10 rounded transition-colors"
                       onClick={() => handleStartEditCategory(category)}
                       title="Rename category"
                     >
-                      <Pencil size={14} />
+                      <Pencil size={16} className="md:w-3.5 md:h-3.5" />
                     </button>
                   )}
                   <button
-                    className="w-6 h-6 flex items-center justify-center text-text-light hover:text-danger hover:bg-danger/10 rounded transition-colors"
+                    className="w-8 h-8 md:w-6 md:h-6 flex items-center justify-center text-text-light hover:text-danger hover:bg-danger/10 rounded transition-colors"
                     onClick={() => handleRemoveCategory(category)}
                     title="Remove category"
                   >
-                    <X size={14} />
+                    <X size={16} className="md:w-3.5 md:h-3.5" />
                   </button>
                 </div>
               </div>
@@ -410,59 +410,61 @@ export default function Setup({ event, onUpdateEvent, troopConfig }) {
         </div>
       </div>
 
-      <div className="bg-surface p-6 rounded-lg shadow">
-        <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2"><Car size={20} /> Car Numbers</h3>
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+      <div className="bg-surface p-4 md:p-6 rounded-lg shadow">
+        <h3 className="text-base md:text-lg font-semibold text-text-primary mb-3 md:mb-4 flex items-center gap-2"><Car size={20} /> Car Numbers</h3>
+        <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-3 md:mb-4">
           <label className="flex items-center gap-2 text-sm font-medium text-text-primary">
             From:
             <input
               type="number"
+              inputMode="numeric"
               min="1"
               value={carRange.start}
               onChange={(e) => setCarRange({ ...carRange, start: parseInt(e.target.value) || 1 })}
-              className="w-20 px-3 py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-16 md:w-20 px-2 md:px-3 py-2.5 md:py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </label>
           <label className="flex items-center gap-2 text-sm font-medium text-text-primary">
             To:
             <input
               type="number"
+              inputMode="numeric"
               min="1"
               value={carRange.end}
               onChange={(e) => setCarRange({ ...carRange, end: parseInt(e.target.value) || 1 })}
-              className={`w-20 px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 ${carRange.end < carRange.start ? 'border-danger' : 'border-border'}`}
+              className={`w-16 md:w-20 px-2 md:px-3 py-2.5 md:py-2 border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 ${carRange.end < carRange.start ? 'border-danger' : 'border-border'}`}
             />
           </label>
           <button
-            className="px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 md:px-4 py-2.5 md:py-2 bg-primary text-white font-semibold rounded hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] md:min-h-0 text-sm"
             onClick={handleAddCarRange}
             disabled={carRange.end < carRange.start}
           >
             + Add Range
           </button>
           {carRange.end < carRange.start && (
-            <span className="text-danger text-sm">End must be ≥ start</span>
+            <span className="text-danger text-xs md:text-sm w-full sm:w-auto">End must be ≥ start</span>
           )}
         </div>
 
         {cars.length > 0 && (
           <>
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-text-light text-sm">
-                {cars.length} cars registered. Click a car to remove it.
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
+              <p className="text-text-light text-xs md:text-sm">
+                {cars.length} cars registered. Tap a car to remove it.
               </p>
-              <button className="px-3 py-1 text-sm text-danger border border-danger rounded hover:bg-danger hover:text-white transition-colors" onClick={handleClearAllCars}>
+              <button className="px-3 py-2 md:py-1 text-sm text-danger border border-danger rounded hover:bg-danger hover:text-white transition-colors min-h-[44px] md:min-h-0" onClick={handleClearAllCars}>
                 Clear All
               </button>
             </div>
             <div
-              className="grid gap-2"
-              style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${Math.max(...cars).toString().length * 0.6 + 2.5}rem, max-content))` }}
+              className="grid gap-1.5 md:gap-2"
+              style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${Math.max(3, Math.max(...cars).toString().length * 0.6 + 2.5)}rem, max-content))` }}
             >
               {cars.map((carNumber) => (
                 <button
                   key={carNumber}
-                  className="group relative px-3 py-1.5 bg-background border border-border rounded text-sm text-center font-semibold tabular-nums hover:border-danger hover:bg-danger/5 transition-colors"
+                  className="group relative px-2 md:px-3 py-2 md:py-1.5 bg-background border border-border rounded text-sm text-center font-semibold tabular-nums hover:border-danger hover:bg-danger/5 transition-colors min-w-[44px] min-h-[44px] md:min-h-0"
                   onClick={() => handleRemoveCar(carNumber)}
                   title={`Remove car ${carNumber}`}
                 >
@@ -476,30 +478,30 @@ export default function Setup({ event, onUpdateEvent, troopConfig }) {
       </div>
 
       {cars.length > 0 && (
-        <div className="bg-surface p-6 rounded-lg shadow">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2"><Tags size={20} /> Car Names (Optional)</h3>
+        <div className="bg-surface p-4 md:p-6 rounded-lg shadow">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2">
+            <h3 className="text-base md:text-lg font-semibold text-text-primary flex items-center gap-2"><Tags size={20} /> Car Names (Optional)</h3>
             <button
-              className="px-3 py-1 text-sm text-primary border border-primary rounded hover:bg-primary hover:text-white transition-colors"
+              className="px-3 py-2 md:py-1 text-sm text-primary border border-primary rounded hover:bg-primary hover:text-white transition-colors min-h-[44px] md:min-h-0"
               onClick={() => setShowCarNaming(!showCarNaming)}
             >
               {showCarNaming ? 'Hide' : 'Show'}
             </button>
           </div>
-          <p className="text-text-light text-sm mb-4">Add names to cars for winner announcements (e.g., "The Lightning Bolt" or owner's name)</p>
+          <p className="text-text-light text-xs md:text-sm mb-3 md:mb-4">Add names to cars for winner announcements (e.g., "The Lightning Bolt" or owner's name)</p>
 
           {showCarNaming && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-3">
               {cars.map((carNumber) => (
                 <div key={carNumber} className="flex items-center gap-2">
-                  <label className="w-10 text-center font-semibold text-text-primary">{carNumber}</label>
+                  <label className="w-8 md:w-10 text-center font-semibold text-text-primary text-sm">{carNumber}</label>
                   <input
                     type="text"
                     value={event.carNames?.[carNumber] || ''}
                     onChange={(e) => handleCarNameChange(carNumber, e.target.value)}
                     onBlur={() => handleCarNameBlur(carNumber)}
                     placeholder="Car name..."
-                    className="flex-1 px-3 py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    className="flex-1 px-3 py-2.5 md:py-2 border border-border rounded text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
               ))}
