@@ -43,10 +43,11 @@ function App() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showClearAllConfirm, setShowClearAllConfirm] = useState(false);
 
-  // Close mobile menu when view changes
-  useEffect(() => {
+  // Handler to change view and close mobile menu
+  const handleViewChange = (newView) => {
+    setView(newView);
     setMobileMenuOpen(false);
-  }, [view]);
+  };
 
   // Update page title with troop identifier
   useEffect(() => {
@@ -204,7 +205,7 @@ function App() {
         <nav className="flex-1 p-2 flex flex-col gap-0.5">
           <button
             className={`flex items-center gap-3 w-full py-3 md:py-2.5 px-3 rounded text-left font-medium text-white/85 hover:bg-white/10 hover:text-white transition-colors ${view === 'results' ? 'border-l-6 border-derby-tan bg-white/10 text-white font-bold' : 'border-l-6 border-transparent'} ${sidebarCollapsed ? 'md:justify-center md:px-2.5 md:gap-0' : ''}`}
-            onClick={() => setView('results')}
+            onClick={() => handleViewChange('results')}
             title="Results"
           >
             <BarChart3 size={20} className="w-6 min-w-6" />
@@ -212,7 +213,7 @@ function App() {
           </button>
           <button
             className={`flex items-center gap-3 w-full py-3 md:py-2.5 px-3 rounded text-left font-medium text-white/85 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${view === 'voting' ? 'border-l-6 border-derby-tan bg-white/10 text-white font-bold' : 'border-l-6 border-transparent'} ${sidebarCollapsed ? 'md:justify-center md:px-2.5 md:gap-0' : ''}`}
-            onClick={() => setView('voting')}
+            onClick={() => handleViewChange('voting')}
             disabled={event.categories.length === 0 || getCars(event).length === 0}
             title="Vote"
           >
@@ -225,7 +226,7 @@ function App() {
           <div className={`flex items-center gap-1 ${sidebarCollapsed ? 'md:flex-col md:gap-0.5' : ''}`}>
             <button
               className={`flex items-center gap-3 flex-1 py-3 md:py-2.5 px-3 rounded text-left font-medium text-white/85 hover:bg-white/10 hover:text-white transition-colors ${view === 'setup' ? 'border-l-6 border-derby-tan bg-white/10 text-white font-bold' : 'border-l-6 border-transparent'} ${sidebarCollapsed ? 'md:w-full md:justify-center md:px-0 md:gap-0' : ''}`}
-              onClick={() => setView('setup')}
+              onClick={() => handleViewChange('setup')}
               title="Setup"
             >
               <Settings size={20} className="w-6 min-w-6" />
