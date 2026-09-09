@@ -14,13 +14,15 @@ export default function Voting({ event }) {
   const [slipToRemove, setSlipToRemove] = useState(null);
   const firstInputRef = useRef(null);
 
+  // Reload slips when event changes (adjusting state during render, per React docs)
+  const [prevEventId, setPrevEventId] = useState(eventId);
+  if (eventId !== prevEventId) {
+    setPrevEventId(eventId);
+    setSlips(getSlips(eventId));
+  }
+
   // Derive total votes from slips
   const totalVotes = slips.reduce((sum, s) => sum + s.votes.length, 0);
-
-  // Reload slips when event changes
-  useEffect(() => {
-    setSlips(getSlips(eventId));
-  }, [eventId]);
 
   // Focus first input on mount
   useEffect(() => {
