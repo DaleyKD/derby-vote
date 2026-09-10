@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tx0521-derby-vote",
+  "compatibility_date": "2026-09-09",
+  "assets": {
+    "directory": "./dist"
+  },
+  "routes": [
+    {
+      "pattern": "www.tx0521.org/derby-vote",
+      "zone_name": "tx0521.org"
+    },
+    {
+      "pattern": "www.tx0521.org/derby-vote/*",
+      "zone_name": "tx0521.org"
+    }
+  ]
+}

@@ -4,6 +4,9 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/derby-vote/',
+  build: {
+    outDir: 'dist/derby-vote',
+  },
   plugins: [react(), tailwindcss()],
 })

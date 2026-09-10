@@ -33,7 +33,7 @@ npm install
 npm run dev
 ```
 
-Opens the app at `http://localhost:5173`
+Opens the app at `http://localhost:5173/derby-vote/`
 
 ### Production Build
 
@@ -87,6 +87,10 @@ This information will appear in:
 ## Data Storage
 
 All data is stored in the browser's localStorage under the key `derby-vote-data`. Use the Export/Import feature in Setup to backup your data or transfer between devices. The Danger Zone section provides options to delete individual events or clear all local data.
+
+## Deployment
+
+The app is hosted as its own Cloudflare Worker (`tx0521-derby-vote`), configured in `wrangler.jsonc`, serving static assets at `https://www.tx0521.org/derby-vote/`. Cloudflare's Git integration (Workers Builds) watches the `main` branch: every merge triggers a build (`npm run build`) and deploy automatically. No GitHub Actions workflow deploys this app — `.github/workflows/ci.yml` only lints and builds non-`main` branches/PRs as a pre-merge check.
 
 ## Tech Stack
 
