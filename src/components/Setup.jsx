@@ -3,6 +3,15 @@ import { getCars, renameCategory } from '../storage';
 import { getTroopIdentifier } from '../config';
 import { FileText, ListChecks, Car, Tags, ChevronUp, ChevronDown, Pencil, X, Printer } from 'lucide-react';
 
+const escapeHtml = (value) =>
+  String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[char]));
+
 export default function Setup({ event, onUpdateEvent, troopConfig }) {
   const [newCategory, setNewCategory] = useState('');
   const [carRange, setCarRange] = useState({ start: 1, end: 20 });
@@ -147,18 +156,18 @@ export default function Setup({ event, onUpdateEvent, troopConfig }) {
     const slipHtml = `
       <div class="slip">
         <div class="header">
-          <div class="title">${event.name || 'Pinewood Derby'}</div>
-          <div class="troop">Trail Life Troop ${troopIdentifier}</div>
-          ${charterOrg ? `<div class="location">${charterOrg}</div>` : ''}
-          ${troopLocation ? `<div class="location">${troopLocation}</div>` : ''}
-          ${formattedDate ? `<div class="date">${formattedDate}</div>` : ''}
+          <div class="title">${escapeHtml(event.name) || 'Pinewood Derby'}</div>
+          <div class="troop">Trail Life Troop ${escapeHtml(troopIdentifier)}</div>
+          ${charterOrg ? `<div class="location">${escapeHtml(charterOrg)}</div>` : ''}
+          ${troopLocation ? `<div class="location">${escapeHtml(troopLocation)}</div>` : ''}
+          ${formattedDate ? `<div class="date">${escapeHtml(formattedDate)}</div>` : ''}
         </div>
         <div class="categories">
           ${event.categories
             .map(
               (cat) => `
             <div class="category">
-              <span class="cat-name">${cat}</span>
+              <span class="cat-name">${escapeHtml(cat)}</span>
               <span class="car-line">Car # __________</span>
             </div>
           `
@@ -172,7 +181,7 @@ export default function Setup({ event, onUpdateEvent, troopConfig }) {
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Voting Slips - ${event.name || 'Pinewood Derby'}</title>
+        <title>Voting Slips - ${escapeHtml(event.name) || 'Pinewood Derby'}</title>
         <style>
           @page {
             size: letter landscape;
